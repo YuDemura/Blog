@@ -1,0 +1,12 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "prettier.configPath": "./prettierrc.js",
+  "stylelint.configFile": "./.stylelintrc.js",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": true,
+    "source.fixAll.eslint": true
+  },
+  "editor.tabSize": 2
+}
