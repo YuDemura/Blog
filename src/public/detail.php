@@ -60,8 +60,7 @@ $comments_post = $statement->fetchAll(PDO::FETCH_ASSOC);
             <td>内容</td>
         </tr>
         <tr>
-            <td><textarea name="comments" rows="8" cols="40">
-        </textarea></td>
+            <td><textarea name="comments" rows="8" cols="40"></textarea></td>
         </tr>
         <tr>
         </tr>
