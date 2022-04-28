@@ -1,95 +1,46 @@
 <?php
-$msg = [];
-if ($_POST) {
-    $name = filter_input(INPUT_POST, 'name');
-    $email = filter_input(INPUT_POST, 'email');
-    $password = filter_input(INPUT_POST, 'password');
-    $password_conf = filter_input(INPUT_POST, 'password_conf');
-
-    if (!$email) {
-        $msg[] = 'メールアドレスを入力してください';
-    }
-
-    if (!$password) {
-        $msg[] = 'パスワードを入力してください';
-    }
-
-    if ($password !== $password_conf) {
-        $msg[] = 'パスワードが一致しません';
-    }
-
-    if (!$msg) {
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
-        $dbUserName = 'root';
-        $dbPassword = 'password';
-        try {
-            $pdo = new PDO('mysql:host=mysql; dbname=blog; charset=utf8', $dbUserName, $dbPassword);
-        } catch (PDOException $e) {
-            $msg[] = $e->getMessage();
-        }
-
-        $sql = "SELECT * FROM users WHERE email = :email";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-        $stmt->execute();
-        $member = $stmt->fetch();
-        if ($member && $member['email'] === $email) {
-            $msg[] = '同じメールアドレスが存在します。';
-        } else {
-            $sql = "INSERT INTO users(name, email, password) VALUES (:name, :email, :password)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':name', $name, PDO::PARAM_STR);
-            $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-            $stmt->bindValue(':password', $password, PDO::PARAM_STR);
-            $stmt->execute();
-            header('Location: /user/signin.php');
-        }
-    }
-}
+session_start();
+$errors = $_SESSION['errors'] ?? [];
+// unset($_SESSION['errors']);
 ?>
-
-<form action="/user/signup.php" method="post">
-    <body>
-    <?php if ($msg) : ?>
-        <?php foreach ($msg as $m) : ?>
-            <p><?php echo $m ?></p>
-        <?php endforeach; ?>
-        <?php endif; ?>
-    <table>
-        <tr>
-            <td><p>会員登録</p></td>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-            <td><input type="text" name="name" placeholder="User name"></td>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-            <td><input type="email" name="email" placeholder="Email"></td>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-            <td><input type="password" name="password" placeholder="Password"></td>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-            <td><input type="password" name="password_conf" placeholder="Password確認"></td>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-            <td><input type="submit" value="アカウント作成"></td>
-        </tr>
-        <tr>
-        </tr>
-        <tr>
-            <td><a href="./signin.php">ログイン画面へ</a></td>
-        </tr>
-    </table>
-    </body>
-</form>
+​
+<!DOCTYPE html>
+<html lang="ja">
+​
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>login</title>
+</head>
+​
+<body>
+  <div>
+    <div>
+      <h2>会員登録</h2>
+      <?php foreach ($errors as $error): ?>
+        <p><?php echo $error; ?></p>
+      <?php endforeach; ?>
+      <form action="./signup_complete.php" method="POST">
+        <p>
+          <input placeholder="User name" type=“text” name="name" required value="<?php if (
+              isset($_SESSION['name'])
+          ) {
+              echo $_SESSION['name'];
+          } ?>">
+        </p>
+        <p><input placeholder="Email" type=“email” name="email" required value="<?php if (
+            isset($_SESSION['email'])
+        ) {
+            echo $_SESSION['email'];
+        } ?>"></p>
+        <p><input placeholder="Password" type="password" name="password"></p>
+        <p><input placeholder="Password確認" type="password" name="password_conf"></p>
+        <button type="submit">アカウント作成</button>
+      </form>
+      <a href="./signin.php">ログイン画面へ</a>
+    </div>
+  </div>
+</body>
+​
+</html>
