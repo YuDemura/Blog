@@ -1,10 +1,12 @@
 <?php
 session_start();
-include ('header.php');
+
 if (!isset($_SESSION['user_id'])) {
-    header("Location:/user/signin.php");
+    header("Location:./user/signin.php");
     exit();
 }
+
+include ('header.php');
 
 $dbUserName = 'root';
 $dbPassword = 'password';
