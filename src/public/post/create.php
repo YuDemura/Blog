@@ -1,27 +1,14 @@
 <?php
-$msg = [];
+require_once(__DIR__ . '/../../app/Lib/createBlog.php');
+require_once(__DIR__ . '/../../app/Lib/redirect.php');
 session_start();
 if ($_SESSION){
     if ($_POST) {
-        $dbUserName = 'root';
-        $dbPassword = 'password';
-        try {
-            $pdo = new PDO('mysql:host=mysql; dbname=blog; charset=utf8', $dbUserName, $dbPassword);
-        } catch (PDOException $e) {
-            $msg[] = $e->getMessage();
-        }
-        //セッションuser_idも入れる！！
         $user_id = $_SESSION['user_id'];
         $title = filter_input(INPUT_POST, 'title');
         $contents = filter_input(INPUT_POST, 'contents');
-        $sql = 'INSERT INTO blogs(user_id, title, contents) VALUES(:user_id, :title, :contents)';
-        $statement = $pdo->prepare($sql);
-        $statement->bindValue(':title', $title, PDO::PARAM_STR);
-        $statement->bindValue(':contents', $contents, PDO::PARAM_STR);
-        $statement->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-        $statement->execute();
-        header('Location:/mypage.php');
-        exit();
+        createBlog($user_id, $title, $contents);
+        redirect('/mypage.php');
     }
 }
 ?>
