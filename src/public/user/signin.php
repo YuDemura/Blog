@@ -1,10 +1,8 @@
 <?php
+require_once(__DIR__ . '/../../app/Lib/session.php');
 session_start();
-$registed = $_SESSION['registed'] ?? '';
-$error = $_SESSION['errors'] ?? '';
-
-$_SESSION['registed'] = '';
-unset($_SESSION['errors']);
+$errors = errorsInit();
+$registed = registedInit();
 ?>
 
 <!DOCTYPE html>
