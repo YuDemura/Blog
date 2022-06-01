@@ -25,7 +25,7 @@ if (isset($_GET['search'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$blogs = showBlogList($user_id, $title, $contents);
+$blogs = showBlogList($user_id, $title, $contents, $direction);
 ?>
 
 <!DOCTYPE html>
@@ -49,14 +49,8 @@ $blogs = showBlogList($user_id, $title, $contents);
          <button type="submit">検索</button>
         </div>
         <div>
-          <label>
-            <input type="submit" name="order" value="desc" class="">
-            <span>新しい順</span>
-          </label>
-          <label>
-            <input type="submit" name="order" value="asc" class="">
-            <span>古い順</span>
-          </label>
+            <button type="submit" name="order" value="desc" class="">新しい順</button>
+            <button type="submit" name="order" value="asc" class="">古い順</button>
         </div>
       </form>
     </div>
@@ -70,7 +64,7 @@ $blogs = showBlogList($user_id, $title, $contents);
             <td><?php echo $blog['created_at']; ?></td>
           </tr>
           <tr>
-            <td><?php echo $blog['contents']; ?></td>
+            <td><?php echo mb_substr($blog['contents'], 0, 15, 'UTF-8') . "・・・"; ?></td>
           </tr>
           <tr>
           </tr>

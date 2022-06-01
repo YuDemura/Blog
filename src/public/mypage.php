@@ -27,7 +27,7 @@ if ($_SESSION['user_id']) {
             <td><?php echo $blog['created_at']; ?></td>
         </tr>
         <tr>
-            <td><?php echo $blog['contents']; ?></td>
+            <td><?php echo mb_substr($blog['contents'], 0, 15, 'UTF-8') . "・・・"; ?></td>
         </tr>
         <tr>
         </tr>
