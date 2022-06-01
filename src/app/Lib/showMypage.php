@@ -5,7 +5,20 @@ function showMypage(string $user_id): ?array
 {
 	$pdo = pdoInit();
 
-	$sql = "select id, title, contents, created_at from blogs where user_id=:user_id and length(contents) <= 15";
+	$sql = <<<EOF
+		SELECT
+			id
+			, title
+			, contents
+			, created_at
+		FROM
+			blogs
+		WHERE
+			user_id=:user_id
+			and
+			length(contents) <= 15
+		;
+	EOF;
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 	$statement->execute();

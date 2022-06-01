@@ -5,7 +5,18 @@ function showDetailForComment(string $blog_id)
 {
 	$pdo = pdoInit();
 
-	$sql = "select id, title, contents, created_at from blogs where id=:id";
+	$sql = <<<EOF
+		SELECT
+			id
+			, title
+			, contents
+			, created_at
+		FROM
+			blogs
+		WHERE
+			id=:id
+		;
+	EOF;
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':id', $blog_id, PDO::PARAM_INT);
 	$statement->execute();

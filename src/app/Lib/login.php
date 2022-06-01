@@ -5,7 +5,13 @@ function login(string $email): ?array
 {
 	$pdo = pdoInit();
 
-	$sql = 'select * from users where email = :email';
+	$sql = <<<EOF
+		SELECT * FROM
+			users
+		WHERE
+			email = :email
+		;
+	EOF;
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':email', $email, PDO::PARAM_STR);
 	$statement->execute();

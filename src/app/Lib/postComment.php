@@ -5,7 +5,20 @@ function postComment(string $user_id, string $blog_id, string $commenter_name, s
 {
 	$pdo = pdoInit();
 
-	$sql = "INSERT INTO comments(user_id, blog_id, commenter_name, comments) VALUES(:user_id, :blog_id, :commenter_name, :comments)";
+	$sql = <<<EOF
+		INSERT INTO
+			comments
+				(user_id
+				, blog_id
+				, commenter_name
+				, comments)
+		VALUES
+			(:user_id
+			, :blog_id
+			, :commenter_name
+			, :comments)
+		;
+	EOF;
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 	$statement->bindValue(':blog_id', $blog_id, PDO::PARAM_INT);

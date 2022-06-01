@@ -7,7 +7,18 @@ function createUser(string $name, string $email, string $password): void
 
 	$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-	$sql = "INSERT INTO users(name, email, password) VALUES (:name, :email, :password)";
+	$sql = <<<EOF
+        INSERT INTO
+            users
+                (name
+                , email
+                , password)
+        VALUES
+            (:name
+            , :email
+            , :password)
+        ;
+    EOF;
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':name', $name, PDO::PARAM_STR);
 	$statement->bindValue(':email', $email, PDO::PARAM_STR);

@@ -5,7 +5,20 @@ function editMyarticledetail(string $blog_id, string $user_id): ?array
 {
 	$pdo = pdoInit();
 
-	$sql = "SELECT id, title, contents, created_at from blogs WHERE id=:id and user_id = :user_id";
+	$sql = <<<EOF
+		SELECT
+			id
+			, title
+			, contents
+			, created_at
+		FROM
+			blogs
+		WHERE
+			id=:id
+			and
+			user_id = :user_id
+		;
+	EOF;
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':id', $blog_id, PDO::PARAM_INT);
 	$statement->bindValue(':user_id', $user_id, PDO::PARAM_INT);

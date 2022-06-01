@@ -7,11 +7,15 @@ function commentToPost(string $blog_id, string $user_id): ?array
 
 	$sql = <<<EOF
 		SELECT
-			commenter_name, comments, created_at
+			commenter_name
+			, comments
+			, created_at
 		FROM
 			comments
 		WHERE
-			blog_id=$blog_id and user_id=$user_id
+			blog_id=$blog_id
+			and
+			user_id=$user_id
 		;
 	EOF;
 	$statement = $pdo->prepare($sql);

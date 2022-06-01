@@ -5,7 +5,18 @@ function updateDetail(string $blog_id, string $user_id, string $title, string $c
 {
 	$pdo = pdoInit();
 
-	$sql = 'UPDATE blogs SET title=:title, contents=:contents WHERE id = :id and user_id=:user_id';
+	$sql = <<<EOF
+		UPDATE
+			blogs
+		SET
+			title=:title
+			, contents=:contents
+		WHERE
+			id = :id
+			and
+			user_id=:user_id
+		;
+	EOF;
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':title', $title, PDO::PARAM_STR);
 	$statement->bindValue(':contents', $contents, PDO::PARAM_STR);
