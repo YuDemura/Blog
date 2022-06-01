@@ -1,28 +1,15 @@
 <?php
+require_once(__DIR__ . '/../app/Lib/editMyarticledetail.php');
+require_once(__DIR__ . '/../app/Lib/delate.php');
+require_once(__DIR__ . '/../app/Lib/redirect.php');
+
 session_start();
-
-$dbUserName = 'root';
-$dbPassword = 'password';
-$pdo = new PDO('mysql:host=mysql; dbname=blog; charset=utf8', $dbUserName, $dbPassword);
-
-$user_id = $_SESSION['user_id'];
 $blog_id = filter_input(INPUT_GET, 'id');
-
-$sql = "SELECT title, created_at, contents, id from blogs WHERE user_id = :user_id and id=:id";
-$statement = $pdo->prepare($sql);
-$statement->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-$statement->bindValue(':id', $blog_id, PDO::PARAM_INT);
-$statement->execute();
-$blog = $statement->fetch();
-
+$user_id = $_SESSION['user_id'];
+$blog = editMyarticledetail($blog_id, $user_id);
 if (isset($_POST['delete'])) {
-    $sql = "DELETE FROM blogs where user_id = :user_id and id =:id";
-    $statement = $pdo->prepare($sql);
-    $statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $statement->bindParam(':id', $blog_id, PDO::PARAM_INT);
-    $statement->execute();
-    header('Location: /mypage.php');
-    exit();
+    delate($user_id, $blog_id);
+    redirect('/mypage.php');
 }
 ?>
 
