@@ -1,11 +1,8 @@
 <?php
-$dbUserName = 'root';
-$dbPassword = 'password';
-$pdo = new PDO(
-    'mysql:host=mysql; dbname=blog; charset=utf8',
-    $dbUserName,
-    $dbPassword
-);
+require_once(__DIR__ . '/../../app/Lib/session.php');
+require_once(__DIR__ . '/../../app/Lib/findUserByMail.php');
+require_once(__DIR__ . '/../../app/Lib/createUser.php');
+require_once(__DIR__ . '/../../app/Lib/redirect.php');
 
 $email = filter_input(INPUT_POST, 'email');
 $name = filter_input(INPUT_POST, 'name');
@@ -17,39 +14,21 @@ $_SESSION['email'] = $email;
 $_SESSION['name'] = $name;
 
 if (empty($password) || empty($password_conf)) {
-    $_SESSION['errors'][] = 'パスワードを入力してください';
-    header('Location: ./signup.php');
-    exit();
+    appendError("パスワードを入力してください");
+    redirect('signup.php');
 }
-
 if ($password !== $password_conf) {
-    $_SESSION['errors'][] = 'パスワードが一致しません';
-    header('Location: ./signup.php');
-    exit();
+    appendError("パスワードが一致しません");
+    redirect('signup.php');
 }
 
-$sql = 'select * from users where email=:email';
-$statement = $pdo->prepare($sql);
-$statement->bindValue(':email', $email, PDO::PARAM_STR);
-$statement->execute();
-$member = $statement->fetch();
-
+$member = findUserByMail($email);
 if ($member) {
-    $_SESSION['errors'][] = 'すでに登録済みのメールアドレスです';
-    header('Location: ./signup.php');
-    exit();
+    appendError("すでに登録済みのメールアドレスです");
+    redirect('signup.php');
 }
 
-$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-$sql =
-    'INSERT INTO `users`(`name`, `email`, `password`) VALUES (:name, :email, :password)';
-$statement = $pdo->prepare($sql);
-$statement->bindValue(':name', $name, PDO::PARAM_STR);
-$statement->bindValue(':email', $email, PDO::PARAM_STR);
-$statement->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
-$statement->execute();
+createUser($name, $email, $password);
 
 $_SESSION['registed'] = '登録できました。';
-header('Location: ./signin.php');
-exit();
+redirect('signin.php');

@@ -1,25 +1,15 @@
 <?php
+require_once(__DIR__ . '/../app/Lib/showDetailForComment.php');
+require_once(__DIR__ . '/../app/Lib/commentToPost.php');
+
 session_start();
-$dbUserName = 'root';
-$dbPassword = 'password';
-try {
-    $pdo = new PDO('mysql:host=mysql; dbname=blog; charset=utf8', $dbUserName, $dbPassword);
-} catch (PDOException $e) {
-    $msg = $e->getMessage();
-}
 
 $blog_id = $_GET['id'];
 $user_id = $_SESSION['user_id'];
-$sql = "select title, created_at, contents, id from blogs where id=:id";
-$statement = $pdo->prepare($sql);
-$statement->bindParam(':id', $blog_id, PDO::PARAM_INT);
-$statement->execute();
-$blog = $statement->fetch();
 
-$sql = "SELECT commenter_name, comments, created_at FROM comments WHERE blog_id=$blog_id and user_id=$user_id";
-$statement = $pdo->prepare($sql);
-$statement->execute();
-$comments_post = $statement->fetchAll(PDO::FETCH_ASSOC);
+$blog = showDetailForComment($blog_id);
+
+$comments_post = commentToPost($blog_id, $user_id);
 ?>
 
 <!DOCTYPE html>

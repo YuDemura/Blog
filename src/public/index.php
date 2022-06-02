@@ -1,20 +1,14 @@
 <?php
+require_once(__DIR__ . '/../app/Lib/redirect.php');
+require_once(__DIR__ . '/../app/Lib/showBlogList.php');
+
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location:./user/signin.php");
-    exit();
+  redirect('./user/signin.php');
 }
 
-include ('header.php');
-
-$dbUserName = 'root';
-$dbPassword = 'password';
-try {
-    $pdo = new PDO('mysql:host=mysql; dbname=blog; charset=utf8', $dbUserName, $dbPassword);
-} catch (PDOException $e) {
-    $msg = $e->getMessage();
-}
+require_once(__DIR__ . '/../app/Lib/header.php');
 
 if (isset($_GET['order'])) {
     $direction = $_GET['order'];
@@ -31,13 +25,7 @@ if (isset($_GET['search'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$sql = "SELECT title, created_at, contents, id FROM blogs WHERE user_id=:user_id and title LIKE :title OR contents LIKE :contents and length(contents) <= 15 ORDER BY id $direction";
-$stmt = $pdo->prepare($sql);
-$stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-$stmt->bindValue(':title', $title, PDO::PARAM_STR);
-$stmt->bindValue(':contents', $contents, PDO::PARAM_STR);
-$stmt->execute();
-$blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$blogs = showBlogList($user_id, $title, $contents, $direction);
 ?>
 
 <!DOCTYPE html>
@@ -61,19 +49,13 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
          <button type="submit">検索</button>
         </div>
         <div>
-          <label>
-            <input type="submit" name="order" value="desc" class="">
-            <span>新しい順</span>
-          </label>
-          <label>
-            <input type="submit" name="order" value="asc" class="">
-            <span>古い順</span>
-          </label>
+            <button type="submit" name="order" value="desc" class="">新しい順</button>
+            <button type="submit" name="order" value="asc" class="">古い順</button>
         </div>
       </form>
     </div>
     <div>
-    <?php foreach ($blogs as $blog): ?>
+    <?php foreach ((array)$blogs as $blog): ?>
       <table>
           <tr>
             <td><?php echo $blog['title']; ?></td>
@@ -82,7 +64,7 @@ $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <td><?php echo $blog['created_at']; ?></td>
           </tr>
           <tr>
-            <td><?php echo $blog['contents']; ?></td>
+            <td><?php echo mb_substr($blog['contents'], 0, 15, 'UTF-8') . "・・・"; ?></td>
           </tr>
           <tr>
           </tr>

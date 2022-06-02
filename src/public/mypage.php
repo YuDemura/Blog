@@ -1,17 +1,10 @@
 <?php
 session_start();
-include ('header.php');
+require_once(__DIR__ . '/../app/Lib/header.php');
+require_once(__DIR__ . '/../app/Lib/showMypage.php');
 if ($_SESSION['user_id']) {
-    $dbUserName = 'root';
-    $dbPassword = 'password';
-    $pdo = new PDO('mysql:host=mysql; dbname=blog; charset=utf8', $dbUserName, $dbPassword);
-
     $user_id = $_SESSION['user_id'];
-    $sql = "select title, created_at, contents, id from blogs where user_id=:user_id and length(contents) <= 15";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt->execute();
-    $blogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $blogs = showMypage($user_id);
 }
 ?>
 
@@ -34,7 +27,7 @@ if ($_SESSION['user_id']) {
             <td><?php echo $blog['created_at']; ?></td>
         </tr>
         <tr>
-            <td><?php echo $blog['contents']; ?></td>
+            <td><?php echo mb_substr($blog['contents'], 0, 15, 'UTF-8') . "・・・"; ?></td>
         </tr>
         <tr>
         </tr>

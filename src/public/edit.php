@@ -1,19 +1,11 @@
 <?php
+require_once(__DIR__ . '/../app/Lib/showDetail.php');
 session_start();
-
-$dbUserName = 'root';
-$dbPassword = 'password';
-$pdo = new PDO('mysql:host=mysql; dbname=blog; charset=utf8', $dbUserName, $dbPassword);
 
 $user_id = $_SESSION['user_id'];
 $blog_id = filter_input(INPUT_GET, 'id');
 
-$sql = "select title, contents, id from blogs where user_id=:user_id and id=:id";
-$statement = $pdo->prepare($sql);
-$statement->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-$statement->bindParam(':id', $blog_id, PDO::PARAM_INT);
-$statement->execute();
-$blog = $statement->fetch();
+$blog = showDetail($user_id, $blog_id);
 ?>
 
 <!DOCTYPE html>
