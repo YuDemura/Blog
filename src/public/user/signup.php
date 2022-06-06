@@ -1,8 +1,13 @@
 <?php
 require_once(__DIR__ . '/../../app/Lib/session.php');
 
-session_start();
-$errors = errorsInit();
+$session = Session::getInstance();
+// var_dump($session);
+$errors = $session->popAllErrors();
+$formInputs = $session->getFormInputs();
+
+$name = $formInputs['name'] ?? '';
+$email = $formInputs['email'] ?? '';
 ?>
 ​
 <!DOCTYPE html>
@@ -26,16 +31,8 @@ $errors = errorsInit();
       <?php endforeach; ?>
 
       <form action="./signup_complete.php" method="POST">
-        <p><input class='border-2 border-gray-300 w-full mb-5' placeholder="User name" type=“text” name="name" required value="<?php if (
-              isset($_SESSION['name'])
-          ) {
-              echo $_SESSION['name'];
-          } ?>"></p>
-        <p><input class='border-2 border-gray-300 w-full mb-5' placeholder="Email" type=“email” name="email" required value="<?php if (
-            isset($_SESSION['email'])
-        ) {
-            echo $_SESSION['email'];
-        } ?>"></p>
+        <p><input class='border-2 border-gray-300 w-full mb-5' placeholder="User name" type=“text” name="name" required value="<?php $name ?>"></p>
+        <p><input class='border-2 border-gray-300 w-full mb-5' placeholder="Email" type=“email” name="email" required value="<?php $email ?>"></p>
         <p><input class='border-2 border-gray-300 w-full mb-5' placeholder="Password" type="password" name="password"></p>
         <p><input class='border-2 border-gray-300 w-full mb-5' placeholder="Password確認" type="password" name="password_conf"></p>
         <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mb-5 w-full' type="submit">アカウント作成</button>

@@ -1,8 +1,13 @@
 <?php
 require_once(__DIR__ . '/../app/Lib/showDetail.php');
-session_start();
+require_once(__DIR__ . '/../app/Lib/session.php');
 
-$user_id = $_SESSION['user_id'];
+$session = Session::getInstance();
+$formInputs = [
+    'user_id' => $user_id
+];
+$session->setFormInputs($formInputs);
+
 $blog_id = filter_input(INPUT_GET, 'id');
 
 $blog = showDetail($user_id, $blog_id);

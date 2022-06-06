@@ -1,8 +1,11 @@
 <?php
 require_once(__DIR__ . '/../../app/Lib/session.php');
-session_start();
-$errors = errorsInit();
-$registed = registedInit();
+$session = Session::getInstance();
+// var_dump($session);
+$errors = $session->popAllErrors();
+// var_dump($errors);
+$successRegistedMessage = $session->getMessage();
+// var_dump($successRegistedMessage);
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +23,7 @@ $registed = registedInit();
     <div class="w-96  bg-white pt-10 pb-10 rounded-xl">
         <div class="w-60 m-auto text-center">
             <h2 class="text-2xl mb-5">ログイン</h2>
-            <h3 class="mb-5 text-xl"><?php echo $registed; ?></h3>
+            <h3 class="mb-5 text-xl"><?php echo $successRegistedMessage; ?></h3>
             <p class="text-red-600"><?php echo $error; ?></p>
             <form class="px-4" action="./signin_complete.php" method="POST">
                 <p><input class="border-2 border-gray-300 mb-5 w-full" type=“text” name="email" type="mail" required placeholder="Email" value="<?php if (

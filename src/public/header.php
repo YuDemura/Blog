@@ -1,6 +1,10 @@
 <?php
-session_start();
-$name =$_SESSION['name'];
+require_once(__DIR__ . '/../app/Lib/session.php');
+$session = Session::getInstance();
+$formInputs = [
+    'name' => $name
+];
+$session->setFormInputs($formInputs);
 ?>
 <header>
 <div class="w-full">

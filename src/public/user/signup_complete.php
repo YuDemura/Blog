@@ -9,26 +9,31 @@ $name = filter_input(INPUT_POST, 'name');
 $password = filter_input(INPUT_POST, 'password');
 $password_conf = filter_input(INPUT_POST, 'password_conf');
 
-session_start();
-$_SESSION['email'] = $email;
-$_SESSION['name'] = $name;
-
+$session = Session::getInstance();
+// var_dump($session);die;
+$formInputs = [
+    'email' => $email,
+    'name' => $name
+];
+$session->setFormInputs($formInputs);
+// var_dump($session);die;
 if (empty($password) || empty($password_conf)) {
-    appendError("パスワードを入力してください");
+    $session->appendError("パスワードを入力してください");
     redirect('signup.php');
 }
 if ($password !== $password_conf) {
-    appendError("パスワードが一致しません");
+    $session->appendError("パスワードが一致しません");
     redirect('signup.php');
 }
 
 $member = findUserByMail($email);
 if ($member) {
-    appendError("すでに登録済みのメールアドレスです");
+    $session->appendError("すでに登録済みのメールアドレスです");
     redirect('signup.php');
 }
 
 createUser($name, $email, $password);
 
-$_SESSION['registed'] = '登録できました。';
+$successRegistedMessage = '登録できました。';
+$session->setMessage($successRegistedMessage);
 redirect('signin.php');

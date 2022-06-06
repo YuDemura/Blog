@@ -2,8 +2,14 @@
 session_start();
 require_once(__DIR__ . '/../app/Lib/header.php');
 require_once(__DIR__ . '/../app/Lib/showMypage.php');
+require_once(__DIR__ . '/../app/Lib/session.php');
+$session = Session::getInstance();
+
 if ($_SESSION['user_id']) {
-    $user_id = $_SESSION['user_id'];
+    $formInputs = [
+        'user_id' => $user_id
+    ];
+    $session->setFormInputs($formInputs);
     $blogs = showMypage($user_id);
 }
 ?>

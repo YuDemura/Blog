@@ -1,10 +1,14 @@
 <?php
 require_once(__DIR__ . '/../../app/Lib/createBlog.php');
 require_once(__DIR__ . '/../../app/Lib/redirect.php');
-session_start();
+require_once(__DIR__ . '/../Lib/session.php');
+$session = Session::getInstance();
 if ($_SESSION){
     if ($_POST) {
-        $user_id = $_SESSION['user_id'];
+        $formInputs = [
+            'user_id' => $user_id
+        ];
+        $session->setFormInputs($formInputs);
         $title = filter_input(INPUT_POST, 'title');
         $contents = filter_input(INPUT_POST, 'contents');
         createBlog($user_id, $title, $contents);

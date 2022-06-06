@@ -1,11 +1,14 @@
 <?php
 require_once(__DIR__ . '/../app/Lib/showDetailForComment.php');
 require_once(__DIR__ . '/../app/Lib/commentToPost.php');
+require_once(__DIR__ . '/../app/Lib/session.php');
 
-session_start();
-
+$session = Session::getInstance();
+$formInputs = [
+    'user_id' => $user_id
+];
+$session->setFormInputs($formInputs);
 $blog_id = $_GET['id'];
-$user_id = $_SESSION['user_id'];
 
 $blog = showDetailForComment($blog_id);
 

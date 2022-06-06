@@ -1,13 +1,20 @@
 <?php
 require_once(__DIR__ . '/../app/Lib/redirect.php');
 require_once(__DIR__ . '/../app/Lib/showBlogList.php');
+require_once(__DIR__ . '/../app/Lib/session.php');
+
+$session = Session::getInstance();
+$formInputs = [
+    'user_id' => $user_id
+];
+$session->setFormInputs($formInputs);
 
 session_start();
-
+var_dump($_SESSION['user_id']);die;
 if (!isset($_SESSION['user_id'])) {
   redirect('./user/signin.php');
 }
-
+// die;
 require_once(__DIR__ . '/../app/Lib/header.php');
 
 if (isset($_GET['order'])) {
@@ -24,7 +31,6 @@ if (isset($_GET['search'])) {
     $contents = '%%';
 }
 
-$user_id = $_SESSION['user_id'];
 $blogs = showBlogList($user_id, $title, $contents, $direction);
 ?>
 
