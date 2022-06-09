@@ -2,10 +2,14 @@
 require_once(__DIR__ . '/../app/Lib/editMyarticledetail.php');
 require_once(__DIR__ . '/../app/Lib/delate.php');
 require_once(__DIR__ . '/../app/Lib/redirect.php');
+require_once __DIR__ . '/../vendor/autoload.php';
+use App\Lib\Session;
 
-session_start();
+$session = Session::getInstance();
+$formInputs = $session->getFormInputs();
+$user_id = $formInputs['user_id'];
+
 $blog_id = filter_input(INPUT_GET, 'id');
-$user_id = $_SESSION['user_id'];
 $blog = editMyarticledetail($blog_id, $user_id);
 if (isset($_POST['delete'])) {
     delate($user_id, $blog_id);

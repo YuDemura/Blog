@@ -1,6 +1,9 @@
 <?php
-session_start();
-$name =$_SESSION['name'];
+require_once __DIR__ . '/../vendor/autoload.php';
+use App\Lib\Session;
+$session = Session::getInstance();
+$formInputs = $session->getFormInputs();
+$name = $formInputs['name'];
 ?>
 <header>
 <div class="w-full">

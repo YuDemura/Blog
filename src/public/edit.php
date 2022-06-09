@@ -1,8 +1,11 @@
 <?php
 require_once(__DIR__ . '/../app/Lib/showDetail.php');
-session_start();
+require_once __DIR__ . '/../vendor/autoload.php';
+use App\Lib\Session;
+$session = Session::getInstance();
+$formInputs = $session->getFormInputs();
+$user_id = $formInputs['user_id'];
 
-$user_id = $_SESSION['user_id'];
 $blog_id = filter_input(INPUT_GET, 'id');
 
 $blog = showDetail($user_id, $blog_id);
