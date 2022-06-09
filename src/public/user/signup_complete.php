@@ -1,5 +1,6 @@
 <?php
-require_once(__DIR__ . '/../../app/Lib/session.php');
+require_once __DIR__ . '/../../vendor/autoload.php';
+use App\Lib\Session;
 require_once(__DIR__ . '/../../app/Lib/findUserByMail.php');
 require_once(__DIR__ . '/../../app/Lib/createUser.php');
 require_once(__DIR__ . '/../../app/Lib/redirect.php');
@@ -10,13 +11,12 @@ $password = filter_input(INPUT_POST, 'password');
 $password_conf = filter_input(INPUT_POST, 'password_conf');
 
 $session = Session::getInstance();
-// var_dump($session);die;
 $formInputs = [
     'email' => $email,
     'name' => $name
 ];
 $session->setFormInputs($formInputs);
-// var_dump($session);die;
+
 if (empty($password) || empty($password_conf)) {
     $session->appendError("パスワードを入力してください");
     redirect('signup.php');
