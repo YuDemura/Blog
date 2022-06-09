@@ -1,4 +1,7 @@
 <?php
+
+namespace App\Lib;
+
 /**
   * セッションの操作を行うクラス
   */
@@ -85,7 +88,7 @@ final class Session
       */
 	public function setFormInputs(array $formInputs): void
 	{
-		// var_dump($forminputs);die;
+		/** @var array $formInputs */
 		foreach ($formInputs as $key => $formInput) {
 			$_SESSION[self::FORM_INPUTS_KEY][$key] = $formInput;
 		}
