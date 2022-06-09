@@ -2,13 +2,12 @@
 require_once(__DIR__ . '/../app/Lib/editMyarticledetail.php');
 require_once(__DIR__ . '/../app/Lib/delate.php');
 require_once(__DIR__ . '/../app/Lib/redirect.php');
-require_once(__DIR__ . '/../app/Lib/session.php');
+require_once __DIR__ . '/../vendor/autoload.php';
+use App\Lib\Session;
 
 $session = Session::getInstance();
-$formInputs = [
-    'user_id' => $user_id
-];
-$session->setFormInputs($formInputs);
+$formInputs = $session->getFormInputs();
+$user_id = $formInputs['user_id'];
 
 $blog_id = filter_input(INPUT_GET, 'id');
 $blog = editMyarticledetail($blog_id, $user_id);
