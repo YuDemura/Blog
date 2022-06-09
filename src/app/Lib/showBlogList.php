@@ -1,6 +1,5 @@
 <?php
 require_once(__DIR__ . '/../Lib/pdoInit.php');
-
 function showBlogList(string $user_id, string $title, string $contents, string $direction): ?array
 {
 	$pdo = pdoInit();
