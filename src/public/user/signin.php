@@ -1,11 +1,11 @@
 <?php
-require_once(__DIR__ . '/../../app/Lib/session.php');
+require_once __DIR__ . '/../../vendor/autoload.php';
+use App\Lib\Session;
 $session = Session::getInstance();
-// var_dump($session);
 $errors = $session->popAllErrors();
-// var_dump($errors);
 $successRegistedMessage = $session->getMessage();
-// var_dump($successRegistedMessage);
+$formInputs = $session->getFormInputs();
+$email = $formInputs['email'] ?? '';
 ?>
 
 <!DOCTYPE html>
@@ -26,11 +26,7 @@ $successRegistedMessage = $session->getMessage();
             <h3 class="mb-5 text-xl"><?php echo $successRegistedMessage; ?></h3>
             <p class="text-red-600"><?php echo $error; ?></p>
             <form class="px-4" action="./signin_complete.php" method="POST">
-                <p><input class="border-2 border-gray-300 mb-5 w-full" type=“text” name="email" type="mail" required placeholder="Email" value="<?php if (
-                    isset($_SESSION['email'])
-                ) {
-                    echo $_SESSION['email'];
-                } ?>"></p>
+                <p><input class="border-2 border-gray-300 mb-5 w-full" type=“text” name="email" type="mail" required placeholder="Email" value="<?php $email ?>"></p>
                 <p><input class="border-2 border-gray-300 mb-5 w-full" type="password" placeholder="Password" name="password"></p>
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mb-5 w-full" type="submit">ログイン</button>
             </form>
