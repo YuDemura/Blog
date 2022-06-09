@@ -1,12 +1,10 @@
 <?php
 require_once(__DIR__ . '/../app/Lib/showDetail.php');
-require_once(__DIR__ . '/../app/Lib/session.php');
-
+require_once __DIR__ . '/../vendor/autoload.php';
+use App\Lib\Session;
 $session = Session::getInstance();
-$formInputs = [
-    'user_id' => $user_id
-];
-$session->setFormInputs($formInputs);
+$formInputs = $session->getFormInputs();
+$user_id = $formInputs['user_id'];
 
 $blog_id = filter_input(INPUT_GET, 'id');
 
