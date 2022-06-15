@@ -1,15 +1,13 @@
 <?php
 
 namespace App\Lib;
+require_once(__DIR__ . '/../Lib/SessionKey.php');
 
 /**
   * セッションの操作を行うクラス
   */
 final class Session
 {
-	private const ERROR_KEY = 'errors';
-	private const FORM_INPUTS_KEY = 'formInputs';
-	private const MESSAGE_KEY = 'message';
 	private static $instance;
 
 	private function __construct()
@@ -52,7 +50,7 @@ final class Session
       */
 	public function appendError(string $errorMessage): void
 	{
-		$_SESSION[self::ERROR_KEY][] = $errorMessage;
+		$_SESSION[SessionKey::ERROR_KEY][] = $errorMessage;
 	}
 
 	/**
@@ -62,9 +60,15 @@ final class Session
       */
 	public function popAllErrors(): array
 	{
-		$errors = $_SESSION[self::ERROR_KEY] ?? [];
-		$this->clear(self::ERROR_KEY);
+		$errors = $_SESSION[SessionKey::ERROR_KEY] ?? [];
+		$erorrKey = new SessionKey(SessionKey::ERROR_KEY);
+		$this->clear($erorrKey);
 		return $errors;
+	}
+
+	public function existsErrors(): bool
+	{
+		return !empty($_SESSION[SessionKey::ERROR_KEY]);
 	}
 
 	/**
@@ -73,9 +77,9 @@ final class Session
       * @param string $sessionKey 削除するセッションキー
       * @return void
       */
-	public function clear(string $sessionKey): void
+	public function clear(SessionKey $sessionKey): void
 	{
-		unset($_SESSION[$sessionKey]);
+		unset($_SESSION[$sessionKey->value()]);
 	}
 
 	/**
@@ -86,12 +90,9 @@ final class Session
       * @param string $formInputs 入力されたフォームのデータ
       * @return void
       */
-	public function setFormInputs(array $formInputs): void
+	public function setFormInputs($value): void
 	{
-		/** @var array $formInputs */
-		foreach ($formInputs as $key => $formInput) {
-			$_SESSION[self::FORM_INPUTS_KEY][$key] = $formInput;
-		}
+		$_SESSION[SessionKey::FORM_INPUTS_KEY] = $value;
 	}
 
 	/**
@@ -101,7 +102,7 @@ final class Session
       */
 	public function getFormInputs(): array
 	{
-		return $_SESSION[self::FORM_INPUTS_KEY] ?? [];
+		return $_SESSION[SessionKey::FORM_INPUTS_KEY] ?? [];
 	}
 
 	/**
@@ -112,7 +113,7 @@ final class Session
 		*/
 	public function setMessage($message): void
 	{
-		$_SESSION[self::MESSAGE_KEY] = $message;
+		$_SESSION[SessionKey::MESSAGE_KEY] = $message;
 	}
 
 	/**
@@ -122,8 +123,10 @@ final class Session
       */
 	public function getMessage(): string
 	{
-		$message = $_SESSION[self::MESSAGE_KEY] ?? '';
-		$this->clear(self::MESSAGE_KEY);
+		$message = $_SESSION[SessionKey::MESSAGE_KEY] ?? "";
+		$messageKey = new SessionKey(SessionKey::MESSAGE_KEY);
+		$this->clear($messageKey);
 		return $message;
+
 	}
 }
