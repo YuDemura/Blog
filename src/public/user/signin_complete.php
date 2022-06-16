@@ -3,6 +3,7 @@ require_once(__DIR__ . '/../../app/Lib/redirect.php');
 require_once(__DIR__ . '/../../app/Lib/login.php');
 require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Lib\Session;
+use App\Lib\SessionKey;
 
 $email = filter_input(INPUT_POST, 'email');
 $password = filter_input(INPUT_POST, 'password');
