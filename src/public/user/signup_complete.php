@@ -2,9 +2,8 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Lib\Session;
 use App\Lib\SessionKey;
-require_once(__DIR__ . '/../../app/Lib/findUserByMail.php');
-require_once(__DIR__ . '/../../app/Lib/createUser.php');
-require_once(__DIR__ . '/../../app/Lib/redirect.php');
+require_once __DIR__ . '/../../app/Infrastructure/Redirect/redirect.php';
+require_once __DIR__ . '/../../app/Infrastructure/Dao/UserDao.php';
 
 $email = filter_input(INPUT_POST, 'email');
 $name = filter_input(INPUT_POST, 'name');
@@ -27,13 +26,14 @@ if ($password !== $password_conf) {
     redirect('signup.php');
 }
 
-$member = findUserByMail($email);
+$userDao = new UserDao();
+$member = $userDao->findUserByMail($email);
 if ($member) {
     $session->appendError("すでに登録済みのメールアドレスです");
     redirect('signup.php');
 }
 
-createUser($name, $email, $password);
+$userDao->createUser($name, $email, $password);
 
 $successRegistedMessage = '登録できました。';
 $session->setMessage($successRegistedMessage);

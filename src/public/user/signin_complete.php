@@ -1,9 +1,9 @@
 <?php
-require_once(__DIR__ . '/../../app/Lib/redirect.php');
-require_once(__DIR__ . '/../../app/Lib/login.php');
 require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Lib\Session;
 use App\Lib\SessionKey;
+require_once __DIR__ . '/../../app/Infrastructure/Redirect/redirect.php';
+require_once __DIR__ . '/../../app/Infrastructure/Dao/UserDao.php';
 
 $email = filter_input(INPUT_POST, 'email');
 $password = filter_input(INPUT_POST, 'password');
@@ -19,9 +19,8 @@ if (empty($email) || empty($password)) {
     redirect('signin.php');
 }
 
-require_once(__DIR__ . '/../../app/Lib/pdoInit.php');
-
-$member = login($email);
+$userDao = new UserDao();
+$member = $userDao->login($email);
 
 if (!password_verify($password, $member['password'])) {
     $session->appendError("メールアドレスまたはパスワードが違います");
