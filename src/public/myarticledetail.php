@@ -1,7 +1,7 @@
 <?php
 require_once(__DIR__ . '/../app/Lib/editMyarticledetail.php');
 require_once(__DIR__ . '/../app/Lib/delate.php');
-require_once(__DIR__ . '/../app/Lib/redirect.php');
+require_once __DIR__ . '/../app/Infrastructure/Redirect/redirect.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
 
