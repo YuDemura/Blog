@@ -1,6 +1,5 @@
 <?php
-require_once(__DIR__ . '/../app/Lib/editMyarticledetail.php');
-require_once(__DIR__ . '/../app/Lib/delate.php');
+require_once(__DIR__ . '/../app/Infrastructure/Dao/BlogDao.php');
 require_once __DIR__ . '/../app/Infrastructure/Redirect/redirect.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
@@ -10,9 +9,10 @@ $formInputs = $session->getFormInputs();
 $user_id = $formInputs['user_id'];
 
 $blog_id = filter_input(INPUT_GET, 'id');
-$blog = editMyarticledetail($blog_id, $user_id);
+$blogDao = new BlogDao();
+$blog = $blogDao->editMyarticledetail($blog_id, $user_id);
 if (isset($_POST['delete'])) {
-    delate($user_id, $blog_id);
+    $blogDao->delate($user_id, $blog_id);
     redirect('/mypage.php');
 }
 ?>

@@ -1,15 +1,15 @@
 <?php
 session_start();
 require_once(__DIR__ . '/../app/Lib/header.php');
-require_once(__DIR__ . '/../app/Lib/showMypage.php');
+require_once(__DIR__ . '/../app/Infrastructure/Dao/BlogDao.php');
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();
-
+$blogDao = new BlogDao();
 if ($formInputs['user_id']) {
     $user_id = $formInputs['user_id'];
-    $blogs = showMypage($user_id);
+    $blogs = $blogDao->showMypage($user_id);
 }
 ?>
 

@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../app/Infrastructure/Redirect/redirect.php';
-require_once(__DIR__ . '/../app/Lib/showBlogList.php');
+require_once(__DIR__ . '/../app/Infrastructure/Dao/BlogDao.php');
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
 $session = Session::getInstance();
@@ -27,7 +27,8 @@ if (isset($_GET['search'])) {
     $contents = '%%';
 }
 $user_id = $formInputs['user_id'];
-$blogs = showBlogList($user_id, $title, $contents, $direction);
+$blogDao = new BlogDao();
+$blogs = $blogDao->showBlogList($user_id, $title, $contents, $direction);
 ?>
 
 <!DOCTYPE html>
