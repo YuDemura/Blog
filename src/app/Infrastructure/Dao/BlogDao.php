@@ -25,7 +25,7 @@ final class BlogDao
      * @param string $title
      * @param string $contents
      */
-    public function createBlog(string $user_id, string $title, string $contents): void
+    public function create(string $user_id, string $title, string $contents): void
     {
 	$sql = <<<EOF
 		INSERT INTO
@@ -51,7 +51,7 @@ final class BlogDao
      * @param string $user_id
      * @param string $blog_id
      */
-    public function delate(string $user_id, string $blog_id): void
+    public function delete(string $user_id, string $blog_id): void
     {
 	$sql = <<<EOF
 		DELETE FROM
@@ -73,7 +73,7 @@ final class BlogDao
      * @param string $blog_id
      * @param string $user_id
      */
-    public function editMyarticledetail(string $blog_id, string $user_id): ?array
+    public function edit(string $blog_id, string $user_id): ?array
     {
 	$sql = <<<EOF
 		SELECT
@@ -220,7 +220,7 @@ final class BlogDao
      * @param string $title
      * @param string $contents
      */
-    public function updateDetail(string $blog_id, string $user_id, string $title, string $contents): void
+    public function editDetail(string $blog_id, string $user_id, string $title, string $contents): void
     {
 	$sql = <<<EOF
 		UPDATE
