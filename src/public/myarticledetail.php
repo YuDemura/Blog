@@ -10,9 +10,9 @@ $user_id = $formInputs['user_id'];
 
 $blog_id = filter_input(INPUT_GET, 'id');
 $blogDao = new BlogDao();
-$blog = $blogDao->editMyarticledetail($blog_id, $user_id);
+$blog = $blogDao->edit($blog_id, $user_id);
 if (isset($_POST['delete'])) {
-    $blogDao->delate($user_id, $blog_id);
+    $blogDao->delete($user_id, $blog_id);
     redirect('/mypage.php');
 }
 ?>

@@ -11,6 +11,6 @@ $title = filter_input(INPUT_POST, 'title');
 $contents = filter_input(INPUT_POST, 'contents');
 
 $blogDao = new BlogDao();
-$blogDao->updateDetail($blog_id, $user_id, $title, $contents);
+$blogDao->editDetail($blog_id, $user_id, $title, $contents);
 redirect("myarticledetail.php?id=$blog_id");
 ?>

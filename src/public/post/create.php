@@ -11,7 +11,7 @@ if ($session){
         $title = filter_input(INPUT_POST, 'title');
         $contents = filter_input(INPUT_POST, 'contents');
         $blogDao = new BlogDao();
-        $blogDao->createBlog($user_id, $title, $contents);
+        $blogDao->create($user_id, $title, $contents);
         redirect('/mypage.php');
     }
 }
