@@ -220,7 +220,7 @@ final class BlogDao
      * @param string $title
      * @param string $contents
      */
-    public function editDetail(string $blog_id, string $user_id, string $title, string $contents): void
+    public function update(string $blog_id, string $user_id, string $title, string $contents): void
     {
 	$sql = <<<EOF
 		UPDATE
