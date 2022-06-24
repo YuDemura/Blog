@@ -1,6 +1,6 @@
 <?php
-require_once(__DIR__ . '/../../app/Lib/createBlog.php');
 require_once __DIR__ . '/../../app/Infrastructure/Redirect/redirect.php';
+require_once __DIR__ . '/../../app/Infrastructure/Dao/BlogDao.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Lib\Session;
 $session = Session::getInstance();
@@ -10,7 +10,8 @@ if ($session){
         $user_id = $formInputs['user_id'];
         $title = filter_input(INPUT_POST, 'title');
         $contents = filter_input(INPUT_POST, 'contents');
-        createBlog($user_id, $title, $contents);
+        $blogDao = new BlogDao();
+        $blogDao->create($user_id, $title, $contents);
         redirect('/mypage.php');
     }
 }

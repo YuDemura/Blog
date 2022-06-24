@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/../app/Lib/postComment.php');
+require_once(__DIR__ . '/../app/Infrastructure/Dao/CommentDao.php');
 require_once __DIR__ . '/../app/Infrastructure/Redirect/redirect.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
@@ -10,6 +10,7 @@ $blog_id = $_POST['id'];
 $commenter_name = filter_input(INPUT_POST, 'commenter_name');
 $comments = filter_input(INPUT_POST, 'comments');
 
-postComment($user_id, $blog_id, $commenter_name, $comments);
+$commentDao = new CommentDao();
+$commentDao->postComment($user_id, $blog_id, $commenter_name, $comments);
 redirect("/detail.php?id=$blog_id");
 ?>

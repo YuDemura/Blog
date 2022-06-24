@@ -1,6 +1,6 @@
 <?php
-require_once(__DIR__ . '/../app/Lib/showDetailForComment.php');
-require_once(__DIR__ . '/../app/Lib/commentToPost.php');
+require_once(__DIR__ . '/../app/Infrastructure/Dao/BlogDao.php');
+require_once(__DIR__ . '/../app/Infrastructure/Dao/CommentDao.php');
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
 $session = Session::getInstance();
@@ -8,9 +8,11 @@ $formInputs = $session->getFormInputs();
 $user_id = $formInputs['user_id'];
 $blog_id = $_GET['id'];
 
-$blog = showDetailForComment($blog_id);
+$blogDao = new BlogDao();
+$blog = $blogDao->showDetailForComment($blog_id);
 
-$comments_post = commentToPost($blog_id, $user_id);
+$commentDao = new CommentDao();
+$comments_post = $commentDao->commentToPost($blog_id, $user_id);
 ?>
 
 <!DOCTYPE html>
