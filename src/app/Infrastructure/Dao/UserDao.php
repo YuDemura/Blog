@@ -1,24 +1,14 @@
 <?php
+namespace App\Infrastructure\Dao;
+
+require_once __DIR__ . '/../../../vendor/autoload.php';
+
+use PDO;
 /**
  * ユーザー情報を操作するDAO
  */
-final class UserDao
+final class UserDao extends Dao
 {
-    private $pdo;
-
-    public function __construct()
-    {
-        try {
-            $this->pdo = new PDO(
-                'mysql:dbname=blog;host=mysql;charset=utf8',
-                'root',
-                'password'
-            );
-        } catch (PDOException $e) {
-            exit('DB接続エラー:' . $e->getMessage());
-        }
-    }
-
     /**
      * ユーザーを追加する
      * @param  string $name
