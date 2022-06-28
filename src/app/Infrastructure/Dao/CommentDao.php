@@ -1,24 +1,14 @@
 <?php
+namespace App\Infrastructure\Dao;
+
+require_once __DIR__ . '/../../../vendor/autoload.php';
+
+use PDO;
 /**
  * コメント情報を操作するDAO
  */
-final class CommentDao
+final class CommentDao extends Dao
 {
-    private $pdo;
-
-    public function __construct()
-    {
-        try {
-            $this->pdo = new PDO(
-                'mysql:dbname=blog;host=mysql;charset=utf8',
-                'root',
-                'password'
-            );
-        } catch (PDOException $e) {
-            exit('DB接続エラー:' . $e->getMessage());
-        }
-    }
-
     /**
      * コメントする記事表示
      * @param string $blog_id

@@ -5,6 +5,8 @@ use App\Lib\SessionKey;
 require_once __DIR__ . '/../../app/Infrastructure/Redirect/redirect.php';
 require_once __DIR__ . '/../../app/Infrastructure/Dao/UserDao.php';
 
+use App\Infrastructure\Dao\UserDao;
+
 $email = filter_input(INPUT_POST, 'email');
 $password = filter_input(INPUT_POST, 'password');
 

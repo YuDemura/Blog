@@ -4,6 +4,8 @@ require_once(__DIR__ . '/../app/Lib/header.php');
 require_once(__DIR__ . '/../app/Infrastructure/Dao/BlogDao.php');
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
+use App\Infrastructure\Dao\BlogDao;
+
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();
 $blogDao = new BlogDao();
