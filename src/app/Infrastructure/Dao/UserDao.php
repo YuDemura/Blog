@@ -57,24 +57,4 @@ final class UserDao extends Dao
 	$member = $statement->fetch(PDO::FETCH_ASSOC);
 	return $member;
     }
-
-    /**
-     * 一致するEメールあるかユーザー検索
-     * @param string $email
-     */
-    public function login(string $email): ?array
-    {
-	$sql = <<<EOF
-		SELECT * FROM
-			users
-		WHERE
-			email = :email
-		;
-	EOF;
-	$statement = $this->pdo->prepare($sql);
-	$statement->bindValue(':email', $email, PDO::PARAM_STR);
-	$statement->execute();
-	$member = $statement->fetch(PDO::FETCH_ASSOC);
-	return $member ? $member : null;
-    }
 }
