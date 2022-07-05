@@ -2,9 +2,6 @@
 namespace App\Usecase\UseCaseInteractor;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
-use App\Lib\Session;
-use App\Lib\SessionKey;
-require_once __DIR__ . '/../../Infrastructure/Redirect/redirect.php';
 use App\Usecase\UseCaseInput\SignUpInput;
 use App\Usecase\UseCaseOutput\SignUpOutput;
 use App\Infrastructure\Dao\UserDao;
@@ -24,11 +21,10 @@ final class SignUpInteractor
     public function handler(): SignUpOutput
     {
         $userDao = new UserDao();
-        $member = $userDao->findUserByMail($this->useCaseInput->email());
+        $user = $userDao->findUserByMail($this->useCaseInput->email());
 
-        if ($member) {
+        if (is_null($user)) {
             return new SignUpOutput(false, self::ALLREADY_EXISTS_MESSAGE);
-            redirect('signup.php');
         }
 
         $userDao->createUser(
@@ -37,6 +33,5 @@ final class SignUpInteractor
             $this->useCaseInput->password()
         );
         return new SignUpOutput(true, self::COMPLETED_MESSAGE);
-        redirect('signin.php');
     }
 }
