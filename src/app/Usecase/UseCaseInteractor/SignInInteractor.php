@@ -25,21 +25,17 @@ final class SignInInteractor
 
     public function handler(): SignInOutput
     {
-        $member = $this->findUser();
+        $user = $this->findUser();
 
-        if ($this->notExistsUser($member)) {
+        if ($this->notExistsUser($user)) {
             return new SignInOutput(false, self::FAILED_MESSAGE);
         }
 
-        if ($this->isInvalidPassword($member['password'])) {
+        if ($this->isInvalidPassword($user['password'])) {
             return new SignInOutput(false, self::FAILED_MESSAGE);
         }
 
-        if ($this->notFillOutForm($member['email'], $member['password'])) {
-            return new SignInOutput(false, self::EMPTY_MESSAGE);
-        }
-
-        $this->saveSession($member);
+        $this->saveSession($user);
         return new SignInOutput(true, self::SUCCESS_MESSAGE);
     }
 
@@ -48,9 +44,9 @@ final class SignInInteractor
         return $this->userDao->findUserByMail($this->input->email());
     }
 
-    private function notExistsUser(?array $member): bool
+    private function notExistsUser(?array $user): bool
     {
-        return is_null($member);
+        return is_null($user);
     }
 
     private function isInvalidPassword(string $password): bool
@@ -58,17 +54,12 @@ final class SignInInteractor
         return !password_verify($this->input->password(), $password);
     }
 
-    private function notFillOutForm(string $email, string $password): bool
-    {
-        return empty($this->input->email()) || empty($this->input->password());
-    }
-
-    private function saveSession(array $member): void
+    private function saveSession(array $user): void
     {
         $session = Session::getInstance();
         $formInputs = [
-        'user_id' => $member['id'],
-        'name' => $member['name']
+        'user_id' => $user['id'],
+        'name' => $user['name']
         ];
         $session->setFormInputs($formInputs);
     }
