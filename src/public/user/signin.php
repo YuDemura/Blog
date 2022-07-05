@@ -27,7 +27,7 @@ $email = $formInputs['email'] ?? '';
             <p class="text-red-600"><?php echo $error; ?></p>
             <form class="px-4" action="./signin_complete.php" method="POST">
                 <p><input class="border-2 border-gray-300 mb-5 w-full" type=“text” name="email" type="mail" required placeholder="Email" value="<?php $email ?>"></p>
-                <p><input class="border-2 border-gray-300 mb-5 w-full" type="password" placeholder="Password" name="password"></p>
+                <p><input class="border-2 border-gray-300 mb-5 w-full" type="password" placeholder="Password" name="password" required></p>
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mb-5 w-full" type="submit">ログイン</button>
             </form>
             <a class="text-blue-500" href="./signup.php">アカウントを作る</a>
