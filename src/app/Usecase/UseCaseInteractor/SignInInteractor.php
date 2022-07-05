@@ -12,7 +12,6 @@ final class SignInInteractor
 {
     const FAILED_MESSAGE = 'メールアドレスまたは<br />パスワードが間違っています';
     const SUCCESS_MESSAGE = 'ログインしました';
-    const EMPTY_MESSAGE = 'パスワードとメールアドレスを入力してください';
 
     private $userDao;
     private $input;
