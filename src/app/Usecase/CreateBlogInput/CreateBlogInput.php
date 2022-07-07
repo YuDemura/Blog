@@ -1,5 +1,5 @@
 <?php
-namespace App\Usecase\Blog;
+namespace App\Usecase\CreateBlogInput;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
