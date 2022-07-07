@@ -2,8 +2,8 @@
 require_once __DIR__ . '/../../app/Infrastructure/Redirect/redirect.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Lib\Session;
-use App\Usecase\Blog\CreateBlogInput;
-use App\Usecase\Blog\CreateBlogInteractor;
+use App\Usecase\CreateBlogInput\CreateBlogInput;
+use App\Usecase\CreateBlogInteractor\CreateBlogInteractor;
 
 $session = Session::getInstance();
 if ($session){
