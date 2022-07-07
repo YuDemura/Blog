@@ -1,10 +1,10 @@
 <?php
-namespace App\Usecase\Blog;
+namespace App\Usecase\CreateBlogInteractor;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 use App\Lib\Session;
-use App\Usecase\Blog\CreateBlogInput;
-use App\Usecase\Blog\CreateBlogOutput;
+use App\Usecase\CreateBlogInput\CreateBlogInput;
+use App\Usecase\CreateBlogOutput\CreateBlogOutput;
 use App\Infrastructure\Dao\BlogDao;
 
 final class CreateBlogInteractor
