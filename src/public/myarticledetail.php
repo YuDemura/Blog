@@ -4,6 +4,8 @@ require_once __DIR__ . '/../app/Infrastructure/Redirect/redirect.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
 use App\Infrastructure\Dao\BlogDao;
+use App\Usecase\UseCaseInput\DeleteInput;
+use App\Usecase\UseCaseInteractor\DeleteInteractor;
 
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();
@@ -13,8 +15,12 @@ $blog_id = filter_input(INPUT_GET, 'id');
 $blogDao = new BlogDao();
 $blog = $blogDao->edit($blog_id, $user_id);
 if (isset($_POST['delete'])) {
-    $blogDao->delete($user_id, $blog_id);
-    redirect('/mypage.php');
+    $useCaseInput = new DeleteInput($user_id, $blog_id);
+    $useCase = new DeleteInteractor($useCaseInput);
+    $useCaseOutput = $useCase->deleteBlog();
+    if ($useCaseOutput->isSuccess()) {
+        redirect('/mypage.php');
+    }
 }
 ?>
 
