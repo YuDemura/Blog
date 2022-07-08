@@ -1,7 +1,5 @@
 <?php
-namespace App\Usecase\CreateBlogInput;
-
-require_once __DIR__ . '/../../../vendor/autoload.php';
+namespace App\Usecase\UseCaseInput;
 
 final class CreateBlogInput
 {

@@ -2,8 +2,8 @@
 require_once __DIR__ . '/../../app/Infrastructure/Redirect/redirect.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Lib\Session;
-use App\Usecase\CreateBlogInput\CreateBlogInput;
-use App\Usecase\CreateBlogInteractor\CreateBlogInteractor;
+use App\Usecase\UseCaseInput\CreateBlogInput;
+use App\Usecase\UseCaseInteractor\CreateBlogInteractor;
 
 $session = Session::getInstance();
 if ($session){
@@ -12,10 +12,11 @@ if ($session){
         $user_id = $formInputs['user_id'];
         $title = filter_input(INPUT_POST, 'title');
         $contents = filter_input(INPUT_POST, 'contents');
+        // var_dump($contents);die;
         $useCaseInput = new CreateBlogInput($user_id, $title, $contents);
+        // var_dump($useCaseInput);die;
         $useCase = new CreateBlogInteractor($useCaseInput);
         $useCaseOutput = $useCase->createBlog();
-
         if ($useCaseOutput->isSuccess()) {
             redirect('/../../mypage.php');
         }
