@@ -14,7 +14,7 @@ $comments = filter_input(INPUT_POST, 'comments');
 
 $useCaseInput = new CommentInput($user_id, $blog_id, $commenter_name, $comments);
 $useCase = new CommentInteractor($useCaseInput);
-$useCaseOutput = $useCase->post();
+$useCaseOutput = $useCase->run();
 
 if ($useCaseOutput->issuccess()) {
     redirect("/detail.php?id=$blog_id");
