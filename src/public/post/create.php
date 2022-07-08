@@ -12,9 +12,7 @@ if ($session){
         $user_id = $formInputs['user_id'];
         $title = filter_input(INPUT_POST, 'title');
         $contents = filter_input(INPUT_POST, 'contents');
-        // var_dump($contents);die;
         $useCaseInput = new CreateBlogInput($user_id, $title, $contents);
-        // var_dump($useCaseInput);die;
         $useCase = new CreateBlogInteractor($useCaseInput);
         $useCaseOutput = $useCase->createBlog();
         if ($useCaseOutput->isSuccess()) {
