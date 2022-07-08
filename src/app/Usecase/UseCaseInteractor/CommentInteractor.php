@@ -1,10 +1,10 @@
 <?php
-namespace App\Usecase\CommentInteractor;
+namespace App\Usecase\UseCaseInteractor;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 use App\Lib\Session;
-use App\Usecase\CommentInput\CommentInput;
-use App\Usecase\CommentOutput\CommentOutput;
+use App\Usecase\UseCaseInput\CommentInput;
+use App\Usecase\UseCaseOutput\CommentOutput;
 use App\Infrastructure\Dao\CommentDao;
 
 final class CommentInteractor

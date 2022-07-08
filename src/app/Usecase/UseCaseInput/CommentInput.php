@@ -1,7 +1,5 @@
 <?php
-namespace App\Usecase\CommentInput;
-
-require_once __DIR__ . '/../../../vendor/autoload.php';
+namespace App\Usecase\UseCaseInput;
 
 final class CommentInput
 {

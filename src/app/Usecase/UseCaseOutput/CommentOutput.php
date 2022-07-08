@@ -1,5 +1,5 @@
 <?php
-namespace App\Usecase\CommentOutput;
+namespace App\Usecase\UseCaseOutput;
 
 final class CommentOutput
 {

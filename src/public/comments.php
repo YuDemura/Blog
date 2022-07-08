@@ -2,8 +2,8 @@
 require_once __DIR__ . '/../app/Infrastructure/Redirect/redirect.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
-use App\Usecase\CommentInput\CommentInput;
-use App\Usecase\CommentInteractor\CommentInteractor;
+use App\Usecase\UseCaseInput\CommentInput;
+use App\Usecase\UseCaseInteractor\CommentInteractor;
 
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();
