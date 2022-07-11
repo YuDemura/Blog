@@ -15,7 +15,7 @@ $blog_id = filter_input(INPUT_GET, 'id');
 $blogDao = new BlogDao();
 $blog = $blogDao->edit($blog_id, $user_id);
 if (isset($_POST['delete'])) {
-    $useCaseInput = new DeleteInput($user_id, $blog_id);
+    $useCaseInput = new DeleteInput($blog_id);
     $useCase = new DeleteInteractor($useCaseInput);
     $useCaseOutput = $useCase->deleteBlog();
     if ($useCaseOutput->isSuccess()) {

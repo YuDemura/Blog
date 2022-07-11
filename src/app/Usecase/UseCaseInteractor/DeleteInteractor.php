@@ -18,14 +18,10 @@ final class DeleteInteractor
 
     public function deleteBlog(): DeleteOutput
     {
-      $session = Session::getInstance();
-      $formInputs = $session->getFormInputs();
-      $user_id = $formInputs['user_id'];
-
       $blog_id = $this->input->blog_id();
 
       $blogDao = new BlogDao();
-      $blogDao->delete($user_id, $blog_id);
+      $blogDao->delete($blog_id);
       return new DeleteOutput(true);
     }
 }
