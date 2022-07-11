@@ -13,11 +13,17 @@ $blog_id = filter_input(INPUT_POST, 'id');
 $title = filter_input(INPUT_POST, 'title');
 $contents = filter_input(INPUT_POST, 'contents');
 
-$useCaseInput = new EditInput($blog_id, $user_id, $title, $contents);
-$useCase = new EditInteractor($useCaseInput);
-$useCaseOutput = $useCase->updateBlog();
-if ($useCaseOutput->isSuccess()) {
+try {
+    if (!$user_id) {
+        throw new Exception("ユーザーIDが一致しません");
+    }
+    $useCaseInput = new EditInput($blog_id, $user_id, $title, $contents);
+    $useCase = new EditInteractor($useCaseInput);
+    $useCaseOutput = $useCase->updateBlog();
     redirect("myarticledetail.php?id=$blog_id");
+} catch (Exception $e) {
+    $_SESSION['errors'][] = $e->getMessage();
+    redirect('index.php');
 }
 
 ?>
