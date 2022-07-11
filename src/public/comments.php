@@ -12,12 +12,16 @@ $blog_id = $_POST['id'];
 $commenter_name = filter_input(INPUT_POST, 'commenter_name');
 $comments = filter_input(INPUT_POST, 'comments');
 
-$useCaseInput = new CommentInput($user_id, $blog_id, $commenter_name, $comments);
-$useCase = new CommentInteractor($useCaseInput);
-$useCaseOutput = $useCase->run();
-
-if ($useCaseOutput->issuccess()) {
+try {
+    if (!$user_id) {
+        throw new Exception("ユーザーIDが一致しません");
+    }
+    $useCaseInput = new CommentInput($user_id, $blog_id, $commenter_name, $comments);
+    $useCase = new CommentInteractor($useCaseInput);
+    $useCaseOutput = $useCase->run();
     redirect("/detail.php?id=$blog_id");
+} catch (Exception $e) {
+    $_SESSION['errors'][] = $e->getMessage();
+    redirect('index.php');
 }
-
 ?>
