@@ -16,7 +16,7 @@ final class EditInteractor
         $this->input = $input;
     }
 
-    public function updateBlog(): EditOutput
+    public function run(): EditOutput
     {
         $session = Session::getInstance();
         $formInputs = $session->getFormInputs();
@@ -27,6 +27,13 @@ final class EditInteractor
         $contents = $this->input->contents();
 
         $blogDao = new BlogDao();
+        $user = $blogDao->getUserByBlog($this->input->blog_id());
+        $editUser = $user["user_id"];
+
+        if ($editUser !== $user_id) {
+            return new EditOutput(false);
+        }
+
         $blogDao->update($blog_id, $user_id, $title, $contents);
         return new EditOutput(true);
     }
