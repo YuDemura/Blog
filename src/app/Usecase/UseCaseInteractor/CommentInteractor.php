@@ -6,6 +6,7 @@ use App\Lib\Session;
 use App\Usecase\UseCaseInput\CommentInput;
 use App\Usecase\UseCaseOutput\CommentOutput;
 use App\Infrastructure\Dao\CommentDao;
+use App\Infrastructure\Dao\BlogDao;
 
 final class CommentInteractor
 {
@@ -18,6 +19,7 @@ final class CommentInteractor
 
     public function run(): CommentOutput
     {
+
         $session = Session::getInstance();
         $formInputs = $session->getFormInputs();
         $user_id = $formInputs['user_id'];
@@ -25,6 +27,13 @@ final class CommentInteractor
         $blog_id = $this->input->blog_id();
         $commenter_name = $this->input->commenter_name();
         $comments = $this->input->comments();
+
+        $blogDao = new BlogDao();
+        $blog = $blogDao->findBlogByBlog_id($this->input->blog_id());
+
+        if (is_null($blog)) {
+            return new CommentOutput(false);
+        }
 
         $commentDao = new CommentDao();
         $commentDao->postComment($user_id, $blog_id, $commenter_name, $comments);
