@@ -36,18 +36,22 @@ final class BlogDao extends Dao
 
     /**
      * 記事削除
+     * @param string $user_id
      * @param string $blog_id
      */
-    public function delete(string $blog_id): void
+    public function delete(string $user_id, string $blog_id): void
     {
 	$sql = <<<EOF
 		DELETE FROM
 			blogs
 		WHERE
+			user_id = :user_id
+			and
 			id =:id
 		;
 	EOF;
 	$statement = $this->pdo->prepare($sql);
+	$statement->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 	$statement->bindParam(':id', $blog_id, PDO::PARAM_INT);
 	$statement->execute();
     }
@@ -224,5 +228,76 @@ final class BlogDao extends Dao
 	$statement->bindParam(':id', $blog_id, PDO::PARAM_INT);
 	$statement->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 	$statement->execute();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	 /**
+     * ブログを検索する
+     * @param  string $blog_id
+     */
+    public function findBlogByBlog_id(string $blog_id)
+    {
+	$sql = <<<EOF
+		SELECT
+			id
+		FROM
+			blogs
+		WHERE
+			id = :id
+		;
+	EOF;
+	$statement = $this->pdo->prepare($sql);
+	$statement->bindValue(':id', $blog_id, PDO::PARAM_STR);
+	$statement->execute();
+	$blog = $statement->fetch(PDO::FETCH_ASSOC);
+	return $blog;
     }
 }

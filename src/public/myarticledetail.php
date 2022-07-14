@@ -17,7 +17,7 @@ $blog = $blogDao->edit($blog_id, $user_id);
 if (isset($_POST['delete'])) {
     $useCaseInput = new DeleteInput($blog_id);
     $useCase = new DeleteInteractor($useCaseInput);
-    $useCaseOutput = $useCase->deleteBlog();
+    $useCaseOutput = $useCase->run();
     if ($useCaseOutput->isSuccess()) {
         redirect('/mypage.php');
     }

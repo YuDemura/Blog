@@ -16,9 +16,16 @@ final class DeleteInteractor
         $this->input = $input;
     }
 
-    public function deleteBlog(): DeleteOutput
+    public function run(): DeleteOutput
     {
       $blog_id = $this->input->blog_id();
+
+      $blogDao = new BlogDao();
+      $blog = $blogDao->findBlogByBlog_id($this->input->blog_id());
+
+      if (is_null($blog)) {
+        return new DeleteOutput(false);
+      }
 
       $blogDao = new BlogDao();
       $blogDao->delete($blog_id);
