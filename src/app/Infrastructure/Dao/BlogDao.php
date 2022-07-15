@@ -36,22 +36,18 @@ final class BlogDao extends Dao
 
     /**
      * 記事削除
-     * @param string $user_id
      * @param string $blog_id
      */
-    public function delete(string $user_id, string $blog_id): void
+    public function delete(string $blog_id): void
     {
 	$sql = <<<EOF
 		DELETE FROM
 			blogs
 		WHERE
-			user_id = :user_id
-			and
 			id =:id
 		;
 	EOF;
 	$statement = $this->pdo->prepare($sql);
-	$statement->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 	$statement->bindParam(':id', $blog_id, PDO::PARAM_INT);
 	$statement->execute();
     }
