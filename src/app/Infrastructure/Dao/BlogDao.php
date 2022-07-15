@@ -230,38 +230,15 @@ final class BlogDao extends Dao
 	$statement->execute();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	/**
-	 * ブログID=XXの記事をDBから取得し、その記事を書いた人のユーザIDを取得
-	 * @param string $blog_id
-	 */
-	public function getUserByblog(string $blog_id)
-	{
+	 /**
+     * ブログを検索する
+     * @param  string $blog_id
+     */
+    public function findBlogByBlog_id(string $blog_id)
+    {
 	$sql = <<<EOF
 		SELECT
-			user_id
+			id
 		FROM
 			blogs
 		WHERE
@@ -269,9 +246,9 @@ final class BlogDao extends Dao
 		;
 	EOF;
 	$statement = $this->pdo->prepare($sql);
-	$statement->bindValue(':id', $blog_id, PDO::PARAM_INT);
+	$statement->bindValue(':id', $blog_id, PDO::PARAM_STR);
 	$statement->execute();
-	$user = $statement->fetch(PDO::FETCH_ASSOC);
-	return $user;
-	}
+	$blog = $statement->fetch(PDO::FETCH_ASSOC);
+	return $blog;
+    }
 }
