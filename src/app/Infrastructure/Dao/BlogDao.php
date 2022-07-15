@@ -251,4 +251,26 @@ final class BlogDao extends Dao
 	$blog = $statement->fetch(PDO::FETCH_ASSOC);
 	return $blog;
     }
+
+	/**
+	 * ブログID=XXの記事をDBから取得し、その記事を書いた人のユーザIDを取得
+	 * @param string $blog_id
+	 */
+	public function getUserByblog(string $blog_id)
+	{
+	$sql = <<<EOF
+		SELECT
+			user_id
+		FROM
+			blogs
+		WHERE
+			id = :id
+		;
+	EOF;
+	$statement = $this->pdo->prepare($sql);
+	$statement->bindValue(':id', $blog_id, PDO::PARAM_INT);
+	$statement->execute();
+	$user = $statement->fetch(PDO::FETCH_ASSOC);
+	return $user;
+	}
 }
