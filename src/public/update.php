@@ -3,7 +3,8 @@ require_once(__DIR__ . '/../app/Infrastructure/Dao/BlogDao.php');
 require_once __DIR__ . '/../app/Infrastructure/Redirect/redirect.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
-use App\Infrastructure\Dao\BlogDao;
+use App\Usecase\UseCaseInput\EditInput;
+use App\Usecase\UseCaseInteractor\EditInteractor;
 
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();
@@ -12,7 +13,11 @@ $blog_id = filter_input(INPUT_POST, 'id');
 $title = filter_input(INPUT_POST, 'title');
 $contents = filter_input(INPUT_POST, 'contents');
 
-$blogDao = new BlogDao();
-$blogDao->update($blog_id, $user_id, $title, $contents);
-redirect("myarticledetail.php?id=$blog_id");
+$useCaseInput = new EditInput($blog_id, $user_id, $title, $contents);
+$useCase = new EditInteractor($useCaseInput);
+$useCaseOutput = $useCase->run();
+if ($useCaseOutput->isSuccess()) {
+    redirect("myarticledetail.php?id=$blog_id");
+}
+
 ?>
