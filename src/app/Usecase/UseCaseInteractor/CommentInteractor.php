@@ -31,7 +31,7 @@ final class CommentInteractor
         $blogDao = new BlogDao();
         $blog = $blogDao->findBlogByBlog_id($this->input->blog_id());
 
-        if (is_null($blog)) {
+        if (!$blog) {
             return new CommentOutput(false);
         }
 
