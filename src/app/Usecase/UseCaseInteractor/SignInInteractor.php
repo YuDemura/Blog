@@ -38,17 +38,17 @@ final class SignInInteractor
         return new SignInOutput(true, self::SUCCESS_MESSAGE);
     }
 
-    private function findUser(): ?array
+    private function findUser()
     {
         return $this->userDao->findUserByMail($this->input->email());
     }
 
-    private function notExistsUser(?array $user): bool
+    private function notExistsUser($user): bool
     {
         return is_null($user);
     }
 
-    private function isInvalidPassword(string $password): bool
+    private function isInvalidPassword(?string $password): bool
     {
         return !password_verify($this->input->password(), $password);
     }
