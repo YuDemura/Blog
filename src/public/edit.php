@@ -34,7 +34,7 @@ $blog = $blogDao->showDetail($user_id, $blog_id);
             <td>内容</td>
         </tr>
         <tr>
-            <td><textarea cols="100" rows="10" name="contents"> <?php echo $blog['contents'] ?></textarea>"></td>
+            <td><textarea cols="100" rows="10" name="contents"> <?php echo $blog['contents'] ?></textarea>></td>
         </tr>
         <tr>
         </tr>
