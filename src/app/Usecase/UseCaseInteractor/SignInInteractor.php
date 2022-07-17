@@ -40,7 +40,7 @@ final class SignInInteractor
 
     private function findUser()
     {
-        return $this->userDao->findUserByMail($this->input->email());
+        return $this->userDao->findUserByMail($this->input->email()->value());
     }
 
     private function notExistsUser($user): bool
@@ -50,7 +50,7 @@ final class SignInInteractor
 
     private function isInvalidPassword(?string $password): bool
     {
-        return !password_verify($this->input->password(), $password);
+        return !password_verify($this->input->password()->value(), $password);
     }
 
     private function saveSession(array $user): void
