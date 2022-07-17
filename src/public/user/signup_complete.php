@@ -1,11 +1,12 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Lib\Session;
-use App\Lib\SessionKey;
 require_once __DIR__ . '/../../app/Infrastructure/Redirect/redirect.php';
 require_once __DIR__ . '/../../app/Infrastructure/Dao/UserDao.php';
 
-use App\Infrastructure\Dao\UserDao;
+use App\Domain\ValueObject\UserName;
+use App\Domain\ValueObject\Email;
+use App\Domain\ValueObject\InputPassword;
 use App\Usecase\UseCaseInput\SignUpInput;
 use App\Usecase\UseCaseInteractor\SignUpInteractor;
 
@@ -22,7 +23,11 @@ try {
     if ($password !== $password_conf) {
         throw new Exception('パスワードが一致しません');
     }
-    $useCaseInput = new SignUpInput($name, $email, $password);
+
+    $userName = new UserName($name);
+    $userEmail = new Email($email);
+    $userPassword = new InputPassword($password);
+    $useCaseInput = new SignUpInput($userName, $userEmail, $userPassword);
     $useCase = new SignUpInteractor($useCaseInput);
     $useCaseOutput = $useCase->handler();
 
