@@ -40,6 +40,6 @@ final class HashedPassword
      */
     public function verify(InputPassword $inputPassword): bool
     {
-        return !password_verify($inputPassword->value(), $this->value);
+        return password_verify($inputPassword->value(), $this->value);
     }
 }
