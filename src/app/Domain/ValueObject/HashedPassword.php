@@ -1,6 +1,5 @@
 <?php
 namespace App\Domain\ValueObject;
-use Exception;
 
 /**
  * ハッシュ化したパスワード用のValueObject
