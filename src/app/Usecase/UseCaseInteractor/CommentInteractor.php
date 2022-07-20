@@ -24,12 +24,12 @@ final class CommentInteractor
         $formInputs = $session->getFormInputs();
         $user_id = $formInputs['user_id'];
 
-        $blog_id = $this->input->blog_id();
-        $commenter_name = $this->input->commenter_name();
-        $comments = $this->input->comments();
+        $blog_id = $this->input->blog_id()->value();
+        $commenter_name = $this->input->commenter_name()->value();
+        $comments = $this->input->comments()->value();
 
         $blogDao = new BlogDao();
-        $blog = $blogDao->findBlogByBlog_id($this->input->blog_id());
+        $blog = $blogDao->findBlogByBlog_id($this->input->blog_id()->value());
 
         if (!$blog) {
             return new CommentOutput(false);
