@@ -22,8 +22,8 @@ final class CreateBlogInteractor
       $formInputs = $session->getFormInputs();
       $user_id = $formInputs['user_id'];
 
-      $title = $this->input->title();
-      $contents = $this->input->contents();
+      $title = $this->input->title()->value();
+      $contents = $this->input->contents()->value();
 
       $blogDao = new BlogDao();
       $blogDao->create($user_id, $title, $contents);
