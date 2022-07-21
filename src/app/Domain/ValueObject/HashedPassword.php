@@ -1,5 +1,6 @@
 <?php
 namespace App\Domain\ValueObject;
+use Exception;
 
 /**
  * ハッシュ化したパスワード用のValueObject
@@ -23,6 +24,9 @@ final class HashedPassword
      */
     public function __construct(string $value)
     {
+        if ($value === '') {
+            throw new Exception("不正な値です");
+        }
         $this->value = $value;
     }
 
