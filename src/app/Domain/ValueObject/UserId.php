@@ -1,5 +1,6 @@
 <?php
 namespace App\Domain\ValueObject;
+use Exception;
 
 /**
  * ユーザーID用のValueObject
