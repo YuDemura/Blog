@@ -21,16 +21,15 @@ final class SignUpInteractor
     public function handler(): SignUpOutput
     {
         $userDao = new UserDao();
-        $user = $userDao->findUserByMail($this->useCaseInput->email());
-
-        if (is_null($user)) {
+        $user = $userDao->findUserByMail($this->useCaseInput->email()->value());
+        if ($user) {
             return new SignUpOutput(false, self::ALLREADY_EXISTS_MESSAGE);
         }
 
         $userDao->createUser(
-            $this->useCaseInput->name(),
-            $this->useCaseInput->email(),
-            $this->useCaseInput->password()
+            $this->useCaseInput->name()->value(),
+            $this->useCaseInput->email()->value(),
+            $this->useCaseInput->password()->value()
         );
         return new SignUpOutput(true, self::COMPLETED_MESSAGE);
     }

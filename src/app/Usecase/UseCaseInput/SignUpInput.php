@@ -1,30 +1,60 @@
 <?php
 namespace App\Usecase\UseCaseInput;
+require_once __DIR__ . '/../../../vendor/autoload.php';
+use App\Domain\ValueObject\UserName;
+use App\Domain\ValueObject\Email;
+use App\Domain\ValueObject\InputPassword;
 
 final class SignUpInput
 {
+    /**
+     * @var UserName
+     */
     private $name;
+
+    /**
+     * @var Email
+     */
     private $email;
+
+    /**
+     * @var InputPassword
+     */
     private $password;
 
-    public function __construct(string $name, string $email, string $password)
+    /**
+     * コンストラクタ
+     * @param UserName $name
+     * @param Email $email
+     * @param InputPassword $password
+     */
+    public function __construct(UserName $name, Email $email, InputPassword $password)
     {
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
     }
 
-    public function name(): string
+    /**
+     * @return UserName
+     */
+    public function name(): UserName
     {
         return $this->name;
     }
 
-    public function email(): string
+    /**
+     * @return Email
+     */
+    public function email(): Email
     {
         return $this->email;
     }
 
-    public function password(): string
+    /**
+     * @return InputPassword
+     */
+    public function password(): InputPassword
     {
         return $this->password;
     }
