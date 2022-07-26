@@ -18,10 +18,10 @@ final class DeleteInteractor
 
     public function run(): DeleteOutput
     {
-      $blog_id = $this->input->blog_id();
+      $blog_id = $this->input->blog_id()->value();
 
       $blogDao = new BlogDao();
-      $blog = $blogDao->findBlogByBlog_id($this->input->blog_id());
+      $blog = $blogDao->findBlogByBlog_id($this->input->blog_id()->value());
 
       if (!$blog) {
         return new DeleteOutput(false);

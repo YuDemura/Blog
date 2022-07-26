@@ -1,6 +1,11 @@
 <?php
 namespace App\Usecase\UseCaseInput;
 
+use App\Domain\ValueObject\UserId;
+use App\Domain\ValueObject\Title;
+use App\Domain\ValueObject\Contents;
+use App\Domain\ValueObject\BlogId;
+
 final class EditInput
 {
     private $blog_id;
@@ -8,7 +13,7 @@ final class EditInput
     private $title;
     private $contents;
 
-    public function __construct(string $blog_id, string $user_id, string $title, string $contents)
+    public function __construct(BlogId $blog_id, UserId $user_id, Title $title, Contents $contents)
     {
         $this->blog_id = $blog_id;
         $this->user_id = $user_id;
@@ -16,22 +21,22 @@ final class EditInput
         $this->contents = $contents;
     }
 
-    public function blog_id(): string
+    public function blog_id(): BlogId
     {
         return $this->blog_id;
     }
 
-    public function user_id(): string
+    public function user_id(): UserId
     {
         return $this->user_id;
     }
 
-    public function title(): string
+    public function title(): Title
     {
         return $this->title;
     }
 
-    public function contents(): string
+    public function contents(): Contents
     {
         return $this->contents;
     }

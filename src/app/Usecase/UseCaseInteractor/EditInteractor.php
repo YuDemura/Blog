@@ -22,12 +22,12 @@ final class EditInteractor
         $formInputs = $session->getFormInputs();
         $user_id = $formInputs['user_id'];
 
-        $blog_id = $this->input->blog_id();
-        $title = $this->input->title();
-        $contents = $this->input->contents();
+        $blog_id = $this->input->blog_id()->value();
+        $title = $this->input->title()->value();
+        $contents = $this->input->contents()->value();
 
         $blogDao = new BlogDao();
-        $user = $blogDao->getUserByBlog($this->input->blog_id());
+        $user = $blogDao->getUserByBlog($this->input->blog_id()->value());
         $editUser = $user["user_id"];
 
         if ($editUser !== $user_id) {
