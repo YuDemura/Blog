@@ -4,6 +4,9 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Lib\Session;
 use App\Usecase\UseCaseInput\CreateBlogInput;
 use App\Usecase\UseCaseInteractor\CreateBlogInteractor;
+use App\Domain\ValueObject\UserId;
+use App\Domain\ValueObject\Title;
+use App\Domain\ValueObject\Contents;
 
 $session = Session::getInstance();
 if ($session){
@@ -12,7 +15,10 @@ if ($session){
         $user_id = $formInputs['user_id'];
         $title = filter_input(INPUT_POST, 'title');
         $contents = filter_input(INPUT_POST, 'contents');
-        $useCaseInput = new CreateBlogInput($user_id, $title, $contents);
+        $userId = new UserId($user_id);
+        $Title = new Title($title);
+        $Contents = new Contents($contents);
+        $useCaseInput = new CreateBlogInput($userId, $Title, $Contents);
         $useCase = new CreateBlogInteractor($useCaseInput);
         $useCaseOutput = $useCase->createBlog();
         if ($useCaseOutput->isSuccess()) {
