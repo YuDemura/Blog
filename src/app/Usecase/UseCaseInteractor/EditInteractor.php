@@ -30,11 +30,11 @@ final class EditInteractor
         $user = $blogDao->getUserByBlog($this->input->blog_id()->value());
         $editUser = $user["user_id"];
 
-        if ($editUser !== $user_id) {
+        if ($editUser !== $user_id->value()) {
             return new EditOutput(false);
         }
 
-        $blogDao->update($blog_id, $user_id, $title, $contents);
+        $blogDao->update($blog_id, $user_id->value(), $title, $contents);
         return new EditOutput(true);
     }
 }

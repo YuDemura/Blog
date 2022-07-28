@@ -36,7 +36,7 @@ final class CommentInteractor
         }
 
         $commentDao = new CommentDao();
-        $commentDao->postComment($user_id, $blog_id, $commenter_name, $comments);
+        $commentDao->postComment($user_id->value(), $blog_id, $commenter_name, $comments);
         return new CommentOutput(true);
     }
 }

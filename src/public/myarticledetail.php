@@ -7,7 +7,7 @@ use App\Infrastructure\Dao\BlogDao;
 use App\Usecase\UseCaseInput\DeleteInput;
 use App\Usecase\UseCaseInteractor\DeleteInteractor;
 use App\Domain\ValueObject\BlogId;
-
+use App\Domain\ValueObject\UserId;
 
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();
@@ -15,7 +15,7 @@ $user_id = $formInputs['user_id'];
 
 $blog_id = filter_input(INPUT_GET, 'id');
 $blogDao = new BlogDao();
-$blog = $blogDao->edit($blog_id, $user_id);
+$blog = $blogDao->edit($blog_id, $user_id->value());
 if (isset($_POST['delete'])) {
     $BlogId = new BlogId($blog_id);
     $useCaseInput = new DeleteInput($BlogId);

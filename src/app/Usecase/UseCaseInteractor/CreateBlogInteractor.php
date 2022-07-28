@@ -6,6 +6,7 @@ use App\Lib\Session;
 use App\Usecase\UseCaseInput\CreateBlogInput;
 use App\Usecase\UseCaseOutput\CreateBlogOutput;
 use App\Infrastructure\Dao\BlogDao;
+use App\Domain\ValueObject\UserId;
 
 final class CreateBlogInteractor
 {
@@ -26,7 +27,7 @@ final class CreateBlogInteractor
       $contents = $this->input->contents()->value();
 
       $blogDao = new BlogDao();
-      $blogDao->create($user_id, $title, $contents);
+      $blogDao->create($user_id->value(), $title, $contents);
       return new CreateBlogOutput(true);
     }
 }

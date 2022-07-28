@@ -4,6 +4,7 @@ require_once(__DIR__ . '/../app/Infrastructure/Dao/BlogDao.php');
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
 use App\Infrastructure\Dao\BlogDao;
+use App\Domain\ValueObject\UserId;
 
 $session = Session::getInstance();
 
@@ -30,7 +31,7 @@ if (isset($_GET['search'])) {
 }
 $user_id = $formInputs['user_id'];
 $blogDao = new BlogDao();
-$blogs = $blogDao->showBlogList($user_id, $title, $contents, $direction);
+$blogs = $blogDao->showBlogList($user_id->value(), $title, $contents, $direction);
 ?>
 
 <!DOCTYPE html>

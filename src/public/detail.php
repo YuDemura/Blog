@@ -5,6 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
 use App\Infrastructure\Dao\BlogDao;
 use App\Infrastructure\Dao\CommentDao;
+use App\Domain\ValueObject\UserId;
 
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();
@@ -15,7 +16,7 @@ $blogDao = new BlogDao();
 $blog = $blogDao->showDetailForComment($blog_id);
 
 $commentDao = new CommentDao();
-$comments_post = $commentDao->commentToPost($blog_id, $user_id);
+$comments_post = $commentDao->commentToPost($blog_id, $user_id->value());
 ?>
 
 <!DOCTYPE html>

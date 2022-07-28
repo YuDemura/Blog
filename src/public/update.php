@@ -16,9 +16,8 @@ $user_id = $formInputs['user_id'];
 $blog_id = filter_input(INPUT_POST, 'id');
 $title = filter_input(INPUT_POST, 'title');
 $contents = filter_input(INPUT_POST, 'contents');
-
 $BlogId = new BlogId($blog_id);
-$UserId = new UserId($user_id);
+$UserId = new UserId($user_id->value());
 $Title = new Title($title);
 $Contents = new Contents($contents);
 $useCaseInput = new EditInput($BlogId, $UserId, $Title, $Contents);
