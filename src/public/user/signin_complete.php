@@ -34,6 +34,6 @@ try {
     }
     redirect('../index.php');
 } catch (Exception $e) {
-    $_SESSION['errors'][] = $useCaseOutput->message();
+    $_SESSION['errors'][] = $e->getMessage();
     redirect('./signin.php');
 }
