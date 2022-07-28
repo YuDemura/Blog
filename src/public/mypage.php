@@ -1,17 +1,23 @@
 <?php
-session_start();
-require_once(__DIR__ . '/../app/Lib/header.php');
+require_once __DIR__ . '/../app/Infrastructure/Redirect/redirect.php';
 require_once(__DIR__ . '/../app/Infrastructure/Dao/BlogDao.php');
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
 use App\Infrastructure\Dao\BlogDao;
+use App\Domain\ValueObject\UserId;
 
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();
+
+if (!isset($formInputs['user_id'])) {
+    redirect('./user/signin.php');
+}
+require_once(__DIR__ . '/../app/Lib/header.php');
+
 $blogDao = new BlogDao();
 if ($formInputs['user_id']) {
     $user_id = $formInputs['user_id'];
-    $blogs = $blogDao->showMypage($user_id);
+    $blogs = $blogDao->showMypage($user_id->value());
 }
 ?>
 
