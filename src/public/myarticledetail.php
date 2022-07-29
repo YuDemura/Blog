@@ -7,7 +7,6 @@ use App\Infrastructure\Dao\BlogDao;
 use App\Usecase\UseCaseInput\DeleteInput;
 use App\Usecase\UseCaseInteractor\DeleteInteractor;
 use App\Domain\ValueObject\BlogId;
-use App\Domain\ValueObject\UserId;
 
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();

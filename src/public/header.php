@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
-use App\Domain\ValueObject\UserName;
 
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();

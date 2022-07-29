@@ -5,7 +5,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
 use App\Infrastructure\Dao\BlogDao;
 use App\Infrastructure\Dao\CommentDao;
-use App\Domain\ValueObject\UserId;
 
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();

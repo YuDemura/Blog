@@ -6,7 +6,6 @@ use App\Lib\Session;
 use App\Usecase\UseCaseInput\CreateBlogInput;
 use App\Usecase\UseCaseOutput\CreateBlogOutput;
 use App\Infrastructure\Dao\BlogDao;
-use App\Domain\ValueObject\UserId;
 
 final class CreateBlogInteractor
 {
