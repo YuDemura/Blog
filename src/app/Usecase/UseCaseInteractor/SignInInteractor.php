@@ -2,7 +2,6 @@
 namespace App\Usecase\UseCaseInteractor;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 use App\Lib\Session;
-use App\Lib\SessionKey;
 require_once __DIR__ . '/../../Infrastructure/Redirect/redirect.php';
 use App\Domain\Entity\User;
 use App\Domain\ValueObject\UserId;
@@ -61,7 +60,8 @@ final class SignInInteractor
             new UserId($user['id']),
             new UserName($user['name']),
             new Email($user['email']),
-            new HashedPassword($user['password']));
+            new HashedPassword($user['password'])
+        );
     }
 
     private function isInvalidPassword(?string $password): bool
