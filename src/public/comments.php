@@ -16,7 +16,7 @@ $blog_id = $_POST['id'];
 $commenter_name = filter_input(INPUT_POST, 'commenter_name');
 $comments = filter_input(INPUT_POST, 'comments');
 
-$UserId = new UserId($user_id);
+$UserId = new UserId($user_id->value());
 $BlogId = new BlogId($blog_id);
 $CommenterName = new CommenterName($commenter_name);
 $Comments = new Comments($comments);

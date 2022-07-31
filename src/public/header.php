@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 use App\Lib\Session;
+
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();
 $name = $formInputs['name'];
@@ -15,7 +16,7 @@ $name = $formInputs['name'];
 					</div>
 				</div>
 				<div class="flex flex-col md:flex-row hidden md:block -mx-2">
-    <h1>こんにちは！<?php echo $name; ?>さん</h1>
+    <h1>こんにちは！<?php echo $name->value(); ?>さん</h1>
         <a href="index.php" class="text-gray-800 rounded hover:bg-gray-900 hover:text-gray-100 hover:font-medium py-2 px-2 md:mx-2">ホーム</a>
         <a href="mypage.php" class="text-gray-800 rounded hover:bg-gray-900 hover:text-gray-100 hover:font-medium py-2 px-2 md:mx-2">マイページ</a>
         <a href="logout.php" class="text-gray-800 rounded hover:bg-gray-900 hover:text-gray-100 hover:font-medium py-2 px-2 md:mx-2">ログアウト</a>

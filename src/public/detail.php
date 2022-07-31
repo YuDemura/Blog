@@ -15,7 +15,7 @@ $blogDao = new BlogDao();
 $blog = $blogDao->showDetailForComment($blog_id);
 
 $commentDao = new CommentDao();
-$comments_post = $commentDao->commentToPost($blog_id, $user_id);
+$comments_post = $commentDao->commentToPost($blog_id, $user_id->value());
 ?>
 
 <!DOCTYPE html>

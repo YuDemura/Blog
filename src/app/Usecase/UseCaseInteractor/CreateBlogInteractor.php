@@ -26,7 +26,7 @@ final class CreateBlogInteractor
       $contents = $this->input->contents()->value();
 
       $blogDao = new BlogDao();
-      $blogDao->create($user_id, $title, $contents);
+      $blogDao->create($user_id->value(), $title, $contents);
       return new CreateBlogOutput(true);
     }
 }

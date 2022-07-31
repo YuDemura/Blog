@@ -15,7 +15,7 @@ if ($session){
         $user_id = $formInputs['user_id'];
         $title = filter_input(INPUT_POST, 'title');
         $contents = filter_input(INPUT_POST, 'contents');
-        $userId = new UserId($user_id);
+        $userId = new UserId($user_id->value());
         $Title = new Title($title);
         $Contents = new Contents($contents);
         $useCaseInput = new CreateBlogInput($userId, $Title, $Contents);
