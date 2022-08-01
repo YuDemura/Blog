@@ -127,6 +127,7 @@ final class BlogDao extends Dao
 	$sql = <<<EOF
 		SELECT
 			id
+			,user_id
 			, title
 			, contents
 		FROM
