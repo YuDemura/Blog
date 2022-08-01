@@ -2,10 +2,16 @@
 namespace App\Usecase\UseCaseInteractor;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
-use App\Lib\Session;
 use App\Usecase\UseCaseInput\DeleteInput;
 use App\Usecase\UseCaseOutput\DeleteOutput;
 use App\Infrastructure\Dao\BlogDao;
+use App\Domain\Entity\Blog;
+use App\Domain\ValueObject\BlogId;
+use App\Domain\ValueObject\UserId;
+use App\Domain\ValueObject\Title;
+use App\Domain\ValueObject\Contents;
+use App\Lib\Session;
+
 
 final class DeleteInteractor
 {
@@ -18,7 +24,9 @@ final class DeleteInteractor
 
     public function run(): DeleteOutput
     {
-      $blog_id = $this->input->blog_id()->value();
+      $session = Session::getInstance();
+      $formInputs = $session->getFormInputs();
+      $user_id = $formInputs['user_id'];
 
       $blogDao = new BlogDao();
       $blog = $blogDao->findBlogByBlog_id($this->input->blog_id()->value());
@@ -27,8 +35,20 @@ final class DeleteInteractor
         return new DeleteOutput(false);
       }
 
-      $blogDao = new BlogDao();
-      $blogDao->delete($blog_id);
+      $blogs = $blogDao->showDetail($user_id, $this->input->blog_id()->value());
+
+      $blogEntity = $this->buildBlogEntity($blogs);
+      $blogDao->delete($blogEntity->blogid()->value());
       return new DeleteOutput(true);
+    }
+
+    private function buildBlogEntity(array $blogEntityEx): Blog
+    {
+      return new Blog(
+        new BlogId($blogEntityEx['id']),
+        new UserId($blogEntityEx['user_id']),
+        new Title($blogEntityEx['title']),
+        new Contents($blogEntityEx['contents'])
+      );
     }
 }
