@@ -34,7 +34,7 @@ final class EditInteractor
         $user = $blogDao->getUserByBlog($this->input->blog_id()->value());
         $editUser = $user["user_id"];
 
-        if ($editUser !== $user_id) {
+        if ($editUser !== $user_id->value()) {
             return new EditOutput(false);
         }
 

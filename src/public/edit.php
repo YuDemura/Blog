@@ -11,7 +11,7 @@ $user_id = $formInputs['user_id'];
 $blog_id = filter_input(INPUT_GET, 'id');
 
 $blogDao = new BlogDao();
-$blog = $blogDao->showDetail($user_id, $blog_id);
+$blog = $blogDao->showDetail($user_id->value(), $blog_id);
 ?>
 
 <!DOCTYPE html>

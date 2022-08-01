@@ -13,7 +13,7 @@ if (!isset($formInputs['user_id'])) {
   redirect('./user/signin.php');
 }
 
-require_once(__DIR__ . '/../app/Lib/header.php');
+require_once(__DIR__ . '/header.php');
 
 if (isset($_GET['order'])) {
     $direction = $_GET['order'];
@@ -30,7 +30,7 @@ if (isset($_GET['search'])) {
 }
 $user_id = $formInputs['user_id'];
 $blogDao = new BlogDao();
-$blogs = $blogDao->showBlogList($user_id, $title, $contents, $direction);
+$blogs = $blogDao->showBlogList($user_id->value(), $title, $contents, $direction);
 ?>
 
 <!DOCTYPE html>
