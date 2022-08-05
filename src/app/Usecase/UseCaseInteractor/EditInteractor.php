@@ -38,12 +38,12 @@ final class EditInteractor
             return new EditOutput(false);
         }
 
-        $blogs = $blogDao->showDetail($user_id, $this->input->blog_id()->value());
+        $blogs = $blogDao->showDetail($user_id->value(), $this->input->blog_id()->value());
 
         $blogEntity = $this->buildBlogEntity($blogs);
 
-        $blogDao->update($blogEntity->blogid()->value(), $user_id, $title, $contents);
-        return new EditOutput(true);
+        $blogDao->update($blogEntity->blogId()->value(), $user_id->value(), $title, $contents);
+        return new EditOutput(nnsuumetrue);
     }
 
     private function buildBlogEntity(array $blogEntity): Blog
