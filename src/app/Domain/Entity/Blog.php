@@ -16,12 +16,12 @@ final class Blog
     /**
      * @var BlogId
      */
-    private $blogid;
+    private $blogId;
 
     /**
      * @var UserId
      */
-    private $userid;
+    private $userId;
 
     /**
      * @var Title
@@ -36,19 +36,19 @@ final class Blog
     /**
      * コンストラクタ
      *
-     * @param BlogId $blogid
-     * @param UserId $userid
+     * @param BlogId $blogId
+     * @param UserId $userId
      * @param Title $title
      * @param Contents $contents
      */
     public function __construct(
-        BlogId $blogid,
-        UserId $userid,
+        BlogId $blogId,
+        UserId $userId,
         Title $title,
         Contents $contents
     ) {
-        $this->blogid = $blogid;
-        $this->userid = $userid;
+        $this->blogId = $blogId;
+        $this->userId = $userId;
         $this->title = $title;
         $this->contents = $contents;
     }
@@ -56,17 +56,17 @@ final class Blog
     /**
      * @return BlogId
      */
-    public function blogid(): BlogId
+    public function blogId(): BlogId
     {
-        return $this->blogid;
+        return $this->blogId;
     }
 
     /**
      * @return UserId
      */
-    public function userid(): UserId
+    public function userId(): UserId
     {
-        return $this->userid;
+        return $this->userId;
     }
 
     /**
