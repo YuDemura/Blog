@@ -35,10 +35,10 @@ final class DeleteInteractor
         return new DeleteOutput(false);
       }
 
-      $blogs = $blogDao->showDetail($user_id, $this->input->blog_id()->value());
+      $blogs = $blogDao->showDetail($user_id->value(), $this->input->blog_id()->value());
 
       $blogEntity = $this->buildBlogEntity($blogs);
-      $blogDao->delete($blogEntity->blogid()->value());
+      $blogDao->delete($blogEntity->blogId()->value());
       return new DeleteOutput(true);
     }
 
