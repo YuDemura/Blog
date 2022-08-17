@@ -4,39 +4,34 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use App\Lib\Session;
 require_once __DIR__ . '/../../Infrastructure/Redirect/redirect.php';
 use App\Domain\Entity\User;
-use App\Domain\ValueObject\UserId;
-use App\Domain\ValueObject\UserName;
-use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\HashedPassword;
 use App\Usecase\UseCaseInput\SignInInput;
 use App\Usecase\UseCaseOutput\SignInOutput;
-use App\Infrastructure\Dao\UserDao;
+use App\Adapter\QueryService\UserQueryService;
 
 final class SignInInteractor
 {
     const FAILED_MESSAGE = 'メールアドレスまたは<br />パスワードが間違っています';
     const SUCCESS_MESSAGE = 'ログインしました';
 
-    private $userDao;
+    private $userQueryService;
     private $input;
 
     public function __construct(SignInInput $input)
     {
-        $this->userDao = new UserDao();
+        $this->userQueryService = new UserQueryService();
         $this->input = $input;
     }
 
     public function handler(): SignInOutput
     {
-        $userMapper = $this->findUser();
+        $user = $this->findUser();
 
-        if ($this->notExistsUser($userMapper)) {
+        if ($this->notExistsUser($user)) {
             return new SignInOutput(false, self::FAILED_MESSAGE);
         }
 
-        $user = $this->buildUserEntity($userMapper);
-
-        if ($this->isInvalidPassword($user->password()->value())) {
+        if ($this->isInvalidPassword($user->password())) {
             return new SignInOutput(false, self::FAILED_MESSAGE);
         }
 
@@ -44,29 +39,19 @@ final class SignInInteractor
         return new SignInOutput(true, self::SUCCESS_MESSAGE);
     }
 
-    private function findUser()
+    private function findUser(): ?User
     {
-        return $this->userDao->findUserByMail($this->input->email()->value());
+        return $this->userQueryService->findUserByMail($this->input->email());
     }
 
-    private function notExistsUser($user): bool
+    private function notExistsUser(?User $user): bool
     {
         return is_null($user);
     }
 
-    private function buildUserEntity(array $user): User
+    private function isInvalidPassword(HashedPassword $hashedPassword): bool
     {
-        return new User(
-            new UserId($user['id']),
-            new UserName($user['name']),
-            new Email($user['email']),
-            new HashedPassword($user['password'])
-        );
-    }
-
-    private function isInvalidPassword(?string $password): bool
-    {
-        return !password_verify($this->input->password()->value(), $password);
+        return !$hashedPassword->verify($this->input->password());
     }
 
     private function saveSession(User $user): void
