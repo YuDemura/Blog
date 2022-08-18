@@ -14,9 +14,21 @@ final class SignInInteractor
     const FAILED_MESSAGE = 'メールアドレスまたは<br />パスワードが間違っています';
     const SUCCESS_MESSAGE = 'ログインしました';
 
+    /**
+     * @var UserQueryServise
+     */
     private $userQueryService;
+
+    /**
+     * @var SignInInput
+     */
     private $input;
 
+    /**
+     * コンストラクタ
+     *
+     * @param SignInInput $input
+     */
     public function __construct(SignInInput $input)
     {
         $this->userQueryService = new UserQueryService();

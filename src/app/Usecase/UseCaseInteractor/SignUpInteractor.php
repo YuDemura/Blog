@@ -14,8 +14,19 @@ final class SignUpInteractor
     const ALLREADY_EXISTS_MESSAGE = 'すでに登録済みのメールアドレスです';
     const COMPLETED_MESSAGE = '登録が完了しました';
 
+    /**
+     * @var UserRepository
+     */
     private $userRepository;
+
+    /**
+     * @var UserQueryServise
+     */
     private $userQueryService;
+
+    /**
+     * @var SignUpInput
+     */
     private $input;
 
     public function __construct(SignUpInput $input)
