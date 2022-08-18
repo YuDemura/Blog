@@ -2,7 +2,7 @@
 namespace App\Infrastructure\Dao;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
-
+use App\Domain\ValueObject\NewUser;
 use PDO;
 /**
  * ユーザー情報を操作するDAO
@@ -15,9 +15,9 @@ final class UserDao extends Dao
      * @param  string $email
      * @param  string $password
      */
-    public function createUser(string $name, string $email, string $password): void
+    public function create(NewUser $user): void
     {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $hashedPassword = $user->password()->hash();
 
         $sql = <<<EOF
             INSERT INTO
@@ -32,9 +32,9 @@ final class UserDao extends Dao
             ;
         EOF;
         $statement = $this->pdo->prepare($sql);
-        $statement->bindValue(':name', $name, PDO::PARAM_STR);
-        $statement->bindValue(':email', $email, PDO::PARAM_STR);
-        $statement->bindValue(':password', $hashedPassword, PDO::PARAM_STR);
+        $statement->bindValue(':name', $user->name()->value(), PDO::PARAM_STR);
+        $statement->bindValue(':email', $user->email()->value(), PDO::PARAM_STR);
+        $statement->bindValue(':password', $hashedPassword->value(), PDO::PARAM_STR);
         $statement->execute();
     }
 
@@ -54,7 +54,7 @@ final class UserDao extends Dao
 	$statement = $this->pdo->prepare($sql);
 	$statement->bindValue(':email', $email, PDO::PARAM_STR);
 	$statement->execute();
-	$member = $statement->fetch(PDO::FETCH_ASSOC);
-	return $member;
+	$user = $statement->fetch(PDO::FETCH_ASSOC);
+	return $user === false ? null : $user;
     }
 }
