@@ -15,7 +15,7 @@ final class UserDao extends Dao
      * @param  string $email
      * @param  string $password
      */
-    public function createUser(NewUser $user): void
+    public function create(NewUser $user): void
     {
         $hashedPassword = $user->password()->hash();
 
