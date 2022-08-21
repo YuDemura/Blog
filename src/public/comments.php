@@ -22,9 +22,11 @@ $CommenterName = new CommenterName($commenter_name);
 $Comments = new Comments($comments);
 $useCaseInput = new CommentInput($UserId, $BlogId, $CommenterName, $Comments);
 $useCase = new CommentInteractor($useCaseInput);
-$useCaseOutput = $useCase->run();
+$useCaseOutput = $useCase->handler();
 
 if ($useCaseOutput->isSuccess()) {
+    redirect("/detail.php?id=$blog_id");
+} else {
     redirect("/detail.php?id=$blog_id");
 }
 
