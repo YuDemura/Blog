@@ -48,9 +48,9 @@ final class Session
       * @param string $errorMessage エラー文
       * @return void
       */
-	public function appendError(string $errorMessage): void
+	public function appendError(array $errorMessage): void
 	{
-		$_SESSION[SessionKey::ERROR_KEY][] = $errorMessage;
+		$_SESSION[SessionKey::ERROR_KEY] = $errorMessage;
 	}
 
 	/**
@@ -121,7 +121,7 @@ final class Session
       *
       * @return string
       */
-	public function getMessage(): string
+	public function getMessage(): array
 	{
 		$message = $_SESSION[SessionKey::MESSAGE_KEY] ?? "";
 		$messageKey = new SessionKey(SessionKey::MESSAGE_KEY);
