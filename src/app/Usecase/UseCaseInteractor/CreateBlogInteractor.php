@@ -11,6 +11,7 @@ final class CreateBlogInteractor
 {
     const FAILED_MESSAGE_TITLE = 'タイトルを入力して下さい';
     const FAILED_MESSAGE_CONTENTS = 'ブログ内容を入力して下さい';
+    const SUCCESS_MESSAGE = 'ブログ投稿しました';
 
     /**
      * @var BlogRepository
@@ -30,16 +31,23 @@ final class CreateBlogInteractor
 
     public function handler(): CreateBlogOutput
     {
+        $errors = [];
         if ($this->notFilloutTitle()) {
-            return new CreateBlogOutput(false, self::FAILED_MESSAGE_TITLE);
+            $errors[] = self::FAILED_MESSAGE_TITLE;
         }
 
         if ($this->notFilloutContents()) {
-            return new CreateBlogOutput(false, self::FAILED_MESSAGE_CONTENTS);
+            $errors[] = self::FAILED_MESSAGE_CONTENTS;
         }
 
+        if(!empty($errors)) {
+            return new CreateBlogOutput(false, $errors);
+        }
+
+        $success = [];
         $this->blogup();
-        return new CreateBlogOutput(true);
+        $success[] = self::SUCCESS_MESSAGE;
+        return new CreateBlogOutput(true, $success);
     }
 
     private function notFilloutTitle(): bool
