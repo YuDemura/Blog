@@ -24,7 +24,7 @@ $email = $formInputs['email'] ?? '';
         <div class="w-60 m-auto text-center">
             <h2 class="text-2xl mb-5">ログイン</h2>
             <h3 class="mb-5 text-xl"><?php echo $successRegistedMessage; ?></h3>
-            <p class="text-red-600"><?php echo $error; ?></p>
+            <p class="text-red-600"><?php echo $errors; ?></p>
             <form class="px-4" action="./signin_complete.php" method="POST">
                 <p><input class="border-2 border-gray-300 mb-5 w-full" type=“text” name="email" type="mail" required placeholder="Email" value="<?php $email ?>"></p>
                 <p><input class="border-2 border-gray-300 mb-5 w-full" type="password" placeholder="Password" name="password" required></p>
