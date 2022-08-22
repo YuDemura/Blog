@@ -1,3 +1,10 @@
+<?php
+require_once __DIR__ . '/../../vendor/autoload.php';
+use App\Lib\Session;
+$session = Session::getInstance();
+$errors = $session->popAllErrors();
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -5,6 +12,9 @@
     <title>新規記事</title>
 </head>
 <body>
+    <?php foreach ($errors as $error): ?>
+        <p><?php echo $error; ?></p>
+    <?php endforeach; ?>
     <form action="./store.php" method="POST">
         <table>
             <tr>
