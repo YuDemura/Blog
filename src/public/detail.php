@@ -8,6 +8,10 @@ use App\Infrastructure\Dao\CommentDao;
 
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();
+
+$errors = $session->popAllErrors();
+$messages = $session->getMessage();
+
 $user_id = $formInputs['user_id'];
 $blog_id = $_GET['id'];
 
@@ -25,6 +29,14 @@ $comments_post = $commentDao->commentToPost($blog_id, $user_id->value());
     <title>記事の詳細ページ</title>
 </head>
 <body>
+
+    <?php foreach ($errors as $error): ?>
+        <p class="text-red-600"><?php echo $error; ?></p>
+    <?php endforeach; ?>
+    <?php foreach ($messages as $message): ?>
+        <p><?php echo $message; ?></p>
+    <?php endforeach; ?>
+
     <h1><?php echo $blog['title'] ?></h1>
 
         <table>
