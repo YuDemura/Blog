@@ -2,31 +2,72 @@
 namespace App\Usecase\UseCaseInteractor;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
-use App\Lib\Session;
 use App\Usecase\UseCaseInput\CreateBlogInput;
 use App\Usecase\UseCaseOutput\CreateBlogOutput;
-use App\Infrastructure\Dao\BlogDao;
+use App\Adapter\Repository\BlogRepository;
+use App\Domain\ValueObject\NewBlog;
 
 final class CreateBlogInteractor
 {
+    const FAILED_MESSAGE_TITLE = 'タイトルを入力して下さい';
+    const FAILED_MESSAGE_CONTENTS = 'ブログ内容を入力して下さい';
+    const SUCCESS_MESSAGE = 'ブログ投稿しました';
+
+    /**
+     * @var BlogRepository
+     */
+    private $blogRepository;
+
+    /**
+     * @var CreateBlogInput
+     */
     private $input;
 
     public function __construct(CreateBlogInput $input)
     {
+        $this->blogRepository = new BlogRepository();
         $this->input = $input;
     }
 
-    public function createBlog(): CreateBlogOutput
+    public function handler(): CreateBlogOutput
     {
-      $session = Session::getInstance();
-      $formInputs = $session->getFormInputs();
-      $user_id = $formInputs['user_id'];
+        $errors = [];
+        if ($this->notFilloutTitle()) {
+            $errors[] = self::FAILED_MESSAGE_TITLE;
+        }
 
-      $title = $this->input->title()->value();
-      $contents = $this->input->contents()->value();
+        if ($this->notFilloutContents()) {
+            $errors[] = self::FAILED_MESSAGE_CONTENTS;
+        }
 
-      $blogDao = new BlogDao();
-      $blogDao->create($user_id->value(), $title, $contents);
-      return new CreateBlogOutput(true);
+        if(!empty($errors)) {
+            return new CreateBlogOutput(false, $errors);
+        }
+
+        $success = [];
+        $this->blogup();
+        $success[] = self::SUCCESS_MESSAGE;
+        return new CreateBlogOutput(true, $success);
+    }
+
+    private function notFilloutTitle(): bool
+    {
+        return empty($this->input->title()->value());
+    }
+
+    private function notFilloutContents(): bool
+    {
+        return empty($this->input->contents()->value());
+    }
+
+    private function blogup(): void
+    {
+        $this->blogRepository->insert(
+            new NewBlog(
+                $this->input->user_id(),
+                $this->input->title(),
+                $this->input->contents()
+            )
+        );
     }
 }

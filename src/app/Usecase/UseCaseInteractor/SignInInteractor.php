@@ -11,7 +11,7 @@ use App\Adapter\QueryService\UserQueryService;
 
 final class SignInInteractor
 {
-    const FAILED_MESSAGE = 'メールアドレスまたは<br />パスワードが間違っています';
+    const FAILED_MESSAGE = 'メールアドレスまたは<br>パスワードが間違っていますす';
     const SUCCESS_MESSAGE = 'ログインしました';
 
     /**

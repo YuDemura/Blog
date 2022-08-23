@@ -7,6 +7,7 @@ use App\Infrastructure\Dao\BlogDao;
 
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();
+$messages = $session->getMessage();
 
 if (!isset($formInputs['user_id'])) {
     redirect('./user/signin.php');
@@ -28,6 +29,9 @@ if ($formInputs['user_id']) {
 <title>マイページ</title>
 </head>
 <body>
+    <?php foreach ($messages as $message): ?>
+        <p><?php echo $message; ?></p>
+    <?php endforeach; ?>
     <h1>マイページ</h1>
     <p><a href="./post/create.php">新規作成</a></p>
     <?php foreach ((array)$blogs as $blog): ?>

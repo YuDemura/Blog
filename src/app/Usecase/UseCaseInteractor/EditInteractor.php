@@ -43,7 +43,7 @@ final class EditInteractor
         $blogEntity = $this->buildBlogEntity($blogs);
 
         $blogDao->update($blogEntity->blogId()->value(), $user_id->value(), $title, $contents);
-        return new EditOutput(nnsuumetrue);
+        return new EditOutput(true);
     }
 
     private function buildBlogEntity(array $blogEntity): Blog
