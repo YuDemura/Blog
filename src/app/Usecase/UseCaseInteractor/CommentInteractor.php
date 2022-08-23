@@ -14,7 +14,8 @@ final class CommentInteractor
 {
     const FAILED_MESSAGE_COMMENTER_NAME = 'コメント名を入力して下さい';
     const FAILED_MESSAGE_COMMENTS = 'コメント内容を入力して下さい';
-
+    const FAILED_MESSAGE_NOT_EXISTED = 'ブログが存在しません';
+    const SUCCESS_MESSAGE = 'コメント投稿しました';
     /**
      * @var CommentRepository
      */
@@ -40,20 +41,27 @@ final class CommentInteractor
     public function handler(): CommentOutput
     {
         $blog = $this->findBlog();
+        $errors = [];
         if (!$blog) {
-            return new CommentOutput(false);
+            $errors[] = self::FAILED_MESSAGE_NOT_EXISTED;
         }
 
         if ($this->notFilloutCommenterName()) {
-            return new CommentOutput(false, self::FAILED_MESSAGE_COMMENTER_NAME);
+            $errors[] = self::FAILED_MESSAGE_COMMENTER_NAME;
         }
 
         if ($this->notFilloutComments()) {
-            return new CommentOutput(false, self::FAILED_MESSAGE_COMMENTS);
+            $errors[] = self::FAILED_MESSAGE_COMMENTS;
         }
 
+        if (!empty($errors)) {
+            return new CommentOutput(false, $errors);
+        }
+
+        $success = [];
         $this->commentup();
-        return new CommentOutput(true);
+        $success[] = self::SUCCESS_MESSAGE;
+        return new CommentOutput(true, $success);
     }
 
     /**
@@ -63,7 +71,7 @@ final class CommentInteractor
      */
     private function findBlog(): ?Blog
     {
-        return $this->blogQueryService->findBlogByBlog_id($this->input->blog_id());
+        return $this->blogQueryService->findBlogByBlogId($this->input->blog_id());
     }
 
     private function notFilloutCommenterName(): bool
