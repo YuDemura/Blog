@@ -233,7 +233,7 @@ final class BlogDao extends Dao
      * ブログを検索する
      * @param  string $blog_id
      */
-    public function findBlogByBlog_id(string $blog_id)
+    public function findBlogByBlogId(string $blog_id)
     {
 	$sql = <<<EOF
 		SELECT

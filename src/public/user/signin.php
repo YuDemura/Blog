@@ -20,6 +20,9 @@ $email = $formInputs['email'] ?? '';
 </head>
 
 <body class="bg-gray-200 w-full h-screen flex justify-center items-center">
+    <?php foreach ($errors as $error): ?>
+        <p class="text-red-600"><?php echo $error; ?></p>
+      <?php endforeach; ?>
     <div class="w-96  bg-white pt-10 pb-10 rounded-xl">
         <div class="w-60 m-auto text-center">
             <h2 class="text-2xl mb-5">ログイン</h2>

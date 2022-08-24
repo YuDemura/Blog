@@ -15,17 +15,17 @@ $user_id = $formInputs['user_id'];
 $blog_id = $_POST['id'];
 $commenter_name = filter_input(INPUT_POST, 'commenter_name');
 $comments = filter_input(INPUT_POST, 'comments');
-
 $UserId = new UserId($user_id->value());
 $BlogId = new BlogId($blog_id);
 $CommenterName = new CommenterName($commenter_name);
 $Comments = new Comments($comments);
 $useCaseInput = new CommentInput($UserId, $BlogId, $CommenterName, $Comments);
 $useCase = new CommentInteractor($useCaseInput);
-$useCaseOutput = $useCase->run();
-
-if ($useCaseOutput->isSuccess()) {
-    redirect("/detail.php?id=$blog_id");
+$useCaseOutput = $useCase->handler();
+if (!$useCaseOutput->isSuccess()) {
+    $session->appendError($useCaseOutput->message());
+} else {
+    $session->setMessage($useCaseOutput->message());
 }
-
+redirect("/detail.php?id=$blog_id");
 ?>
