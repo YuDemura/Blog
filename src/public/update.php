@@ -22,7 +22,7 @@ $Title = new Title($title);
 $Contents = new Contents($contents);
 $useCaseInput = new EditInput($BlogId, $UserId, $Title, $Contents);
 $useCase = new EditInteractor($useCaseInput);
-$useCaseOutput = $useCase->run();
+$useCaseOutput = $useCase->handler();
 if ($useCaseOutput->isSuccess()) {
     redirect("myarticledetail.php?id=$blog_id");
 }
