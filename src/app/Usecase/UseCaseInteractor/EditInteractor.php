@@ -2,57 +2,83 @@
 namespace App\Usecase\UseCaseInteractor;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
-use App\Lib\Session;
 use App\Usecase\UseCaseInput\EditInput;
 use App\Usecase\UseCaseOutput\EditOutput;
-use App\Infrastructure\Dao\BlogDao;
 use App\Domain\Entity\Blog;
-use App\Domain\ValueObject\BlogId;
-use App\Domain\ValueObject\UserId;
-use App\Domain\ValueObject\Title;
-use App\Domain\ValueObject\Contents;
+use App\Domain\ValueObject\UpdateBlog;
+use App\Adapter\QueryService\BlogQueryService;
+use App\Adapter\Repository\BlogRepository;
 
 final class EditInteractor
 {
+    /**
+     * @var BlogQueryService
+     */
+    private $blogQueryService;
+
+    /**
+     * @var BlogRepository
+     */
+    private $BlogRepository;
+
+    /**
+     * @var EditInput
+     */
     private $input;
 
     public function __construct(EditInput $input)
     {
-        $this->input = $input;
+      $this->blogQueryService = new BlogQueryService();
+      $this->input = $input;
+      $this->BlogRepository = new BlogRepository();
     }
 
-    public function run(): EditOutput
+    public function handler(): EditOutput
     {
-        $session = Session::getInstance();
-        $formInputs = $session->getFormInputs();
-        $user_id = $formInputs['user_id'];
-
-        $title = $this->input->title()->value();
-        $contents = $this->input->contents()->value();
-
-        $blogDao = new BlogDao();
-        $user = $blogDao->getUserByBlog($this->input->blog_id()->value());
-        $editUser = $user["user_id"];
-
-        if ($editUser !== $user_id->value()) {
+        $user_id = $this->input->user_id()->value();
+        $user = $this->getUser();
+        $editUser = $user->userId()->value();
+        if ($editUser !== $user_id) {
             return new EditOutput(false);
         }
 
-        $blogs = $blogDao->showDetail($user_id->value(), $this->input->blog_id()->value());
-
-        $blogEntity = $this->buildBlogEntity($blogs);
-
-        $blogDao->update($blogEntity->blogId()->value(), $user_id->value(), $title, $contents);
+        $blogs = $this->showBlog();
+        $this->update();
         return new EditOutput(true);
     }
 
-    private function buildBlogEntity(array $blogEntity): Blog
+    /**
+     * ブログID=XXの記事をDBから取得し、その記事を書いた人のユーザIDを取得
+     * @return array | null
+     */
+    private function getUser(): ?Blog
     {
-      return new Blog(
-        new BlogId($blogEntity['id']),
-        new UserId($blogEntity['user_id']),
-        new Title($blogEntity['title']),
-        new Contents($blogEntity['contents'])
-      );
+        return $this->blogQueryService->getUserByBlog($this->input->blog_id());
+    }
+
+    /**
+     * 編集するブログ詳細を抽出
+     * @return array | null
+     */
+    private function showBlog(): ?Blog
+    {
+        return $this->blogQueryService->showDetail($this->input->user_id(), $this->input->blog_id());
+    }
+
+    /**
+     * ブログを編集する
+     *
+     * @return void
+     */
+    private function update(): void
+    {
+        $this->BlogRepository->updateBlog(
+            new UpdateBlog(
+                $this->input->blog_id(),
+                $this->input->user_id(),
+                $this->input->title(),
+                $this->input->contents(),
+            )
+        );
     }
 }
