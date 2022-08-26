@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use App\Infrastructure\Dao\BlogDao;
 use App\Domain\ValueObject\NewBlog;
 use App\Domain\ValueObject\UpdateBlog;
+use App\Domain\ValueObject\Delete;
 
 final class BlogRepository
 {
@@ -26,5 +27,10 @@ final class BlogRepository
     public function updateBlog(UpdateBlog $blog): void
     {
         $this->blogDao->update($blog);
+    }
+
+    public function delete(Delete $blog): void
+    {
+        $this->blogDao->delete($blog);
     }
 }
