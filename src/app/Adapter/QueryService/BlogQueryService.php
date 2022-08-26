@@ -35,6 +35,35 @@ final class BlogQueryService
             );
     }
 
+    public function getUserByBlog(BlogId $blogId): ?Blog
+    {
+        $blogMapperEdit = $this->blogDao->getUserByBlog($blogId->value());
+
+        return $this->notExistsBlog($blogMapperEdit)
+            ? null
+            : new Blog(
+                new BlogId($blogMapperEdit['id']),
+                new UserId($blogMapperEdit['user_id']),
+                new Title($blogMapperEdit['title']),
+                new Contents($blogMapperEdit['contents']),
+            );
+    }
+
+    public function showDetail(UserId $user_id, BlogId $blogId): ?Blog
+    {
+        $blogMapperRead = $this->blogDao->showDetail($user_id->value(),
+        $blogId->value());
+
+        return $this->notExistsBlog($blogMapperRead)
+            ? null
+            : new Blog(
+                new BlogId($blogMapperRead['id']),
+                new UserId($blogMapperRead['user_id']),
+                new Title($blogMapperRead['title']),
+                new Contents($blogMapperRead['contents']),
+            );
+    }
+
     private function notExistsBlog(?array $blog): bool
     {
         return is_null($blog);
