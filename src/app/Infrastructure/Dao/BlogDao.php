@@ -3,6 +3,8 @@ namespace App\Infrastructure\Dao;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 use PDO;
 use App\Domain\ValueObject\NewBlog;
+use App\Domain\ValueObject\UpdateBlog;
+
 
 /**
  * Blog情報を操作するDAO
@@ -207,7 +209,7 @@ final class BlogDao extends Dao
      * @param string $title
      * @param string $contents
      */
-    public function update(string $blog_id, string $user_id, string $title, string $contents): void
+    public function update(UpdateBlog $blog): void
     {
 	$sql = <<<EOF
 		UPDATE
@@ -222,10 +224,10 @@ final class BlogDao extends Dao
 		;
 	EOF;
 	$statement = $this->pdo->prepare($sql);
-	$statement->bindValue(':title', $title, PDO::PARAM_STR);
-	$statement->bindValue(':contents', $contents, PDO::PARAM_STR);
-	$statement->bindParam(':id', $blog_id, PDO::PARAM_INT);
-	$statement->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+	$statement->bindValue(':title', $blog->title()->value(), PDO::PARAM_STR);
+	$statement->bindValue(':contents', $blog->contents()->value(), PDO::PARAM_STR);
+	$statement->bindParam(':id', $blog->blog_id()->value(), PDO::PARAM_INT);
+	$statement->bindValue(':user_id', $blog->user_id()->value(), PDO::PARAM_INT);
 	$statement->execute();
     }
 
@@ -262,7 +264,10 @@ final class BlogDao extends Dao
 	{
 	$sql = <<<EOF
 		SELECT
-			user_id
+			id
+			, user_id
+			, title
+			, contents
 		FROM
 			blogs
 		WHERE
