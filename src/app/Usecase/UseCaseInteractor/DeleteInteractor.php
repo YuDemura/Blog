@@ -35,7 +35,7 @@ final class DeleteInteractor
     }
 
     public function handler(): DeleteOutput
-    {
+    {      
       $blog = $this->findBlog();
 
       if (!$blog) {

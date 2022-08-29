@@ -30,7 +30,7 @@ if (isset($_GET['search'])) {
 }
 $user_id = $formInputs['user_id'];
 $blogDao = new BlogDao();
-$blogs = $blogDao->showBlogList($user_id->value(), $title, $contents, $direction);
+$blogs = $blogDao->showList($user_id->value(), $title, $contents, $direction);
 ?>
 
 <!DOCTYPE html>
