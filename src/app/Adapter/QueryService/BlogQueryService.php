@@ -35,20 +35,6 @@ final class BlogQueryService
             );
     }
 
-    public function findBlogByBlogId(BlogId $blogId): ?Blog
-    {
-        $blogMapperEdit = $this->blogDao->findById($blogId->value());
-
-        return $this->notExistsBlog($blogMapperEdit)
-            ? null
-            : new Blog(
-                new BlogId($blogMapperEdit['id']),
-                new UserId($blogMapperEdit['user_id']),
-                new Title($blogMapperEdit['title']),
-                new Contents($blogMapperEdit['contents']),
-            );
-    }
-
     public function showDetail(UserId $user_id, BlogId $blogId): ?Blog
     {
         $blogMapperRead = $this->blogDao->showDetail($user_id->value(),
