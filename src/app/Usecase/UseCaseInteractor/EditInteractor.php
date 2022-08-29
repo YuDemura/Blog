@@ -53,7 +53,7 @@ final class EditInteractor
      */
     private function getUser(): ?Blog
     {
-        return $this->blogQueryService->getUserByBlog($this->input->blog_id());
+        return $this->blogQueryService->findById($this->input->blog_id());
     }
 
     /**

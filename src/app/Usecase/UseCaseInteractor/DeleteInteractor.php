@@ -29,7 +29,7 @@ final class DeleteInteractor
       $user_id = $formInputs['user_id'];
 
       $blogDao = new BlogDao();
-      $blog = $blogDao->findBlogByBlogId($this->input->blog_id()->value());
+      $blog = $blogDao->findById($this->input->blog_id()->value());
 
       if (!$blog) {
         return new DeleteOutput(false);

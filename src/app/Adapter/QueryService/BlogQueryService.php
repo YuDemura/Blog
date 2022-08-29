@@ -21,9 +21,9 @@ final class BlogQueryService
         $this->blogDao = new BlogDao();
     }
 
-    public function findBlogByBlogId(BlogId $blogId): ?Blog
+    public function findById(BlogId $blogId): ?Blog
     {
-        $blogMapper = $this->blogDao->findBlogByBlogId($blogId->value());
+        $blogMapper = $this->blogDao->findById($blogId->value());
 
         return $this->notExistsBlog($blogMapper)
             ? null
@@ -35,9 +35,9 @@ final class BlogQueryService
             );
     }
 
-    public function getUserByBlog(BlogId $blogId): ?Blog
+    public function findBlogByBlogId(BlogId $blogId): ?Blog
     {
-        $blogMapperEdit = $this->blogDao->getUserByBlog($blogId->value());
+        $blogMapperEdit = $this->blogDao->findById($blogId->value());
 
         return $this->notExistsBlog($blogMapperEdit)
             ? null
