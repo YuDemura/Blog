@@ -19,7 +19,7 @@ if (isset($_POST['delete'])) {
     $BlogId = new BlogId($blog_id);
     $useCaseInput = new DeleteInput($BlogId);
     $useCase = new DeleteInteractor($useCaseInput);
-    $useCaseOutput = $useCase->run();
+    $useCaseOutput = $useCase->handler();
     if ($useCaseOutput->isSuccess()) {
         redirect('/mypage.php');
     }
