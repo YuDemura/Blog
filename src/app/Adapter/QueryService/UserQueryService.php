@@ -4,12 +4,13 @@ namespace App\Adapter\QueryService;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 use App\Infrastructure\Dao\UserDao;
 use App\Domain\Entity\User;
+use App\Domain\InterfaceMapper\UserQueryServiceInterface;
 use App\Domain\ValueObject\UserId;
 use App\Domain\ValueObject\UserName;
 use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\HashedPassword;
 
-final class UserQueryService
+final class UserQueryService implements UserQueryServiceInterface
 {
     /**
      * @var UserDao
