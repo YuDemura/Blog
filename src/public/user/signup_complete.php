@@ -9,6 +9,8 @@ use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\InputPassword;
 use App\Usecase\UseCaseInput\SignUpInput;
 use App\Usecase\UseCaseInteractor\SignUpInteractor;
+use App\Domain\InterfaceMapper\UserQueryServiceInterface;
+use App\Domain\InterfaceMapper\UserRepositoryInterface;
 
 $email = filter_input(INPUT_POST, 'email');
 $name = filter_input(INPUT_POST, 'name');
@@ -28,7 +30,9 @@ try {
     $userEmail = new Email($email);
     $userPassword = new InputPassword($password);
     $useCaseInput = new SignUpInput($userName, $userEmail, $userPassword);
-    $useCase = new SignUpInteractor($useCaseInput);
+    $userRepository = new UserRepositoryInterface($userName, $userEmail, $userPassword);
+    $userQueryService = new UserQueryServiceInterface($userEmail);
+    $useCase = new SignUpInteractor($useCaseInput, $userQueryService, $userRepository);
     $useCaseOutput = $useCase->handler();
 
     if (!$useCaseOutput->isSuccess()) {
