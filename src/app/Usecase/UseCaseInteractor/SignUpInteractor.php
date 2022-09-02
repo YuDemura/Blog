@@ -4,10 +4,10 @@ namespace App\Usecase\UseCaseInteractor;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 use App\Usecase\UseCaseInput\SignUpInput;
 use App\Usecase\UseCaseOutput\SignUpOutput;
-use App\Adapter\QueryService\UserQueryService;
-use App\Adapter\Repository\UserRepository;
 use App\Domain\ValueObject\NewUser;
 use App\Domain\Entity\User;
+use App\Domain\InterfaceMapper\UserQueryServiceInterface;
+use App\Domain\InterfaceMapper\UserRepositoryInterface;
 
 final class SignUpInteractor
 {
@@ -15,26 +15,34 @@ final class SignUpInteractor
     const COMPLETED_MESSAGE = '登録が完了しました';
 
     /**
-     * @var UserRepository
+     * @var UserRepositoryInterface
      */
-    private $userRepository;
+    private $userRepositoryInterface;
 
     /**
-     * @var UserQueryServise
+     * @var UserQueryServiseInterface
      */
-    private $userQueryService;
+    private $userQueryServiceInterface;
 
     /**
      * @var SignUpInput
      */
     private $input;
 
-    public function __construct(SignUpInput $input)
-    {
-        $this->userRepository = new UserRepository();
-        $this->userQueryService = new UserQueryService();
-        $this->input = $input;
-    }
+    /**
+     * コンストラクタ
+     *
+     * @param SignUpInput $input
+     */
+    public function __construct(
+        SignUpInput $input,
+        UserQueryServiceInterface $userQueryServiceInterface,
+        UserRepositoryInterface $userRepositoryInterface
+        ) {
+            $this->userRepositoryInterface = $userRepositoryInterface;
+            $this->userQueryServiceInterface = $userQueryServiceInterface;
+            $this->input = $input;
+        }
 
     public function handler(): SignUpOutput
     {
@@ -49,7 +57,7 @@ final class SignUpInteractor
 
     private function findUser(): ?User
     {
-        return $this->userQueryService->findUserByMail($this->input->email());
+        return $this->userQueryServiceInterface->findUserByMail($this->input->email());
     }
 
     private function existsUser(?User $user): bool
@@ -59,7 +67,7 @@ final class SignUpInteractor
 
     private function signup(): void
     {
-        $this->userRepository->insert(
+        $this->userRepositoryInterface->insert(
             new NewUser(
                 $this->input->name(),
                 $this->input->email(),
