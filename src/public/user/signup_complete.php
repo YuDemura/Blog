@@ -9,8 +9,9 @@ use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\InputPassword;
 use App\Usecase\UseCaseInput\SignUpInput;
 use App\Usecase\UseCaseInteractor\SignUpInteractor;
-use App\Domain\InterfaceMapper\UserQueryServiceInterface;
-use App\Domain\InterfaceMapper\UserRepositoryInterface;
+use App\Infrastructure\Dao\UserDao;
+use App\Adapter\QueryService\UserQueryService;
+use App\Adapter\Repository\UserRepository;
 
 $email = filter_input(INPUT_POST, 'email');
 $name = filter_input(INPUT_POST, 'name');
@@ -30,8 +31,9 @@ try {
     $userEmail = new Email($email);
     $userPassword = new InputPassword($password);
     $useCaseInput = new SignUpInput($userName, $userEmail, $userPassword);
-    $userRepository = new UserRepositoryInterface($userName, $userEmail, $userPassword);
-    $userQueryService = new UserQueryServiceInterface($userEmail);
+    $userDao = new UserDao();
+    $userRepository = new UserRepository($userDao);
+    $userQueryService = new UserQueryService($userDao);
     $useCase = new SignUpInteractor($useCaseInput, $userQueryService, $userRepository);
     $useCaseOutput = $useCase->handler();
 
