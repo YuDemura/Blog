@@ -28,7 +28,7 @@ final class SignUpTest extends TestCase
         );
 
         $userQueryServiceInterface = new class implements UserQueryServiceInterface {
-            public function findUserByEmail(Email $email): ?User
+            public function findUserByMail(Email $email): ?User
             {
                 return null;
             }
@@ -55,7 +55,7 @@ final class SignUpTest extends TestCase
         );
 
         $userQueryServiceInterface = new class implements UserQueryServiceInterface {
-            public function findUserByEmail(Email $email): ?User
+            public function findUserByMail(Email $email): ?User
             {
                 return new User(
                     new UserId(1),
