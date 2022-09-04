@@ -2,7 +2,6 @@
 namespace App\Usecase\UseCaseInteractor;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
-use App\Lib\Session;
 use App\Adapter\QueryService\BlogQueryService;
 use App\Adapter\Repository\CommentRepository;
 use App\Domain\ValueObject\NewComment;
