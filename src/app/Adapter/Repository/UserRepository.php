@@ -4,8 +4,9 @@ namespace App\Adapter\Repository;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 use App\Infrastructure\Dao\UserDao;
 use App\Domain\ValueObject\NewUser;
+use App\Domain\InterfaceMapper\UserRepositoryInterface;
 
-final class UserRepository
+final class UserRepository implements UserRepositoryInterface
 {
     /**
      * @var UserDao
