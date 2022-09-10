@@ -11,10 +11,6 @@ use App\Domain\Entity\Blog;
 
 final class CommentInteractor
 {
-    const FAILED_MESSAGE_COMMENTER_NAME = 'コメント名を入力して下さい';
-    const FAILED_MESSAGE_COMMENTS = 'コメント内容を入力して下さい';
-    const FAILED_MESSAGE_NOT_EXISTED = 'ブログが存在しません';
-    const SUCCESS_MESSAGE = 'コメント投稿しました';
     /**
      * @var CommentRepository
      */
@@ -40,27 +36,12 @@ final class CommentInteractor
     public function handler(): CommentOutput
     {
         $blog = $this->findBlog();
-        $errors = [];
         if (!$blog) {
-            $errors[] = self::FAILED_MESSAGE_NOT_EXISTED;
+            return new CommentOutput(false);
         }
 
-        if ($this->notFilloutCommenterName()) {
-            $errors[] = self::FAILED_MESSAGE_COMMENTER_NAME;
-        }
-
-        if ($this->notFilloutComments()) {
-            $errors[] = self::FAILED_MESSAGE_COMMENTS;
-        }
-
-        if (!empty($errors)) {
-            return new CommentOutput(false, $errors);
-        }
-
-        $success = [];
         $this->commentup();
-        $success[] = self::SUCCESS_MESSAGE;
-        return new CommentOutput(true, $success);
+        return new CommentOutput(true);
     }
 
     /**
@@ -72,17 +53,6 @@ final class CommentInteractor
     {
         return $this->blogQueryService->findBlogByBlogId($this->input->blog_id());
     }
-
-    private function notFilloutCommenterName(): bool
-    {
-        return empty($this->input->commenter_name()->value());
-    }
-
-    private function notFilloutComments(): bool
-    {
-        return empty($this->input->comments()->value());
-    }
-
 
     /**
      * コメントを登録する
