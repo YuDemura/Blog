@@ -5,18 +5,21 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use App\Usecase\UseCaseInput\CreateBlogInput;
 use App\Usecase\UseCaseOutput\CreateBlogOutput;
 use App\Adapter\Repository\BlogRepository;
+use App\Adapter\QueryService\UserQueryService;
 use App\Domain\ValueObject\NewBlog;
+use App\Domain\Entity\User;
 
 final class CreateBlogInteractor
 {
-    const FAILED_MESSAGE_TITLE = 'タイトルを入力して下さい';
-    const FAILED_MESSAGE_CONTENTS = 'ブログ内容を入力して下さい';
-    const SUCCESS_MESSAGE = 'ブログ投稿しました';
-
     /**
      * @var BlogRepository
      */
     private $blogRepository;
+
+    /**
+     * @var UserQueryService
+     */
+    private $userQueryService;
 
     /**
      * @var CreateBlogInput
@@ -26,38 +29,19 @@ final class CreateBlogInteractor
     public function __construct(CreateBlogInput $input)
     {
         $this->blogRepository = new BlogRepository();
+        $this->userQueryService = new UserQueryService();
         $this->input = $input;
     }
 
     public function handler(): CreateBlogOutput
     {
-        $errors = [];
-        if ($this->notFilloutTitle()) {
-            $errors[] = self::FAILED_MESSAGE_TITLE;
+        $user = $this->findUser();
+        if (!$user) {
+            return new CreateBlogOutput(false);
         }
 
-        if ($this->notFilloutContents()) {
-            $errors[] = self::FAILED_MESSAGE_CONTENTS;
-        }
-
-        if(!empty($errors)) {
-            return new CreateBlogOutput(false, $errors);
-        }
-
-        $success = [];
         $this->blogup();
-        $success[] = self::SUCCESS_MESSAGE;
-        return new CreateBlogOutput(true, $success);
-    }
-
-    private function notFilloutTitle(): bool
-    {
-        return empty($this->input->title()->value());
-    }
-
-    private function notFilloutContents(): bool
-    {
-        return empty($this->input->contents()->value());
+        return new CreateBlogOutput(true);
     }
 
     private function blogup(): void
@@ -69,5 +53,14 @@ final class CreateBlogInteractor
                 $this->input->contents()
             )
         );
+    }
+
+    /**
+     * ブログ新規投稿をしようとしているユーザが存在するか
+     * @return array | null
+     */
+    private function findUser(): ?User
+    {
+        return $this->userQueryService->findUserById($this->input->user_id());
     }
 }
