@@ -57,4 +57,25 @@ final class UserDao extends Dao
 	$user = $statement->fetch(PDO::FETCH_ASSOC);
 	return $user === false ? null : $user;
     }
+
+    /**
+     * ユーザーを検索する
+     * @param  int $id
+     */
+    public function findUserById(int $id)
+    {
+	$sql = <<<EOF
+        SELECT * FROM
+            users
+        WHERE
+            id = :id
+        ;
+    EOF;
+	$statement = $this->pdo->prepare($sql);
+	$statement->bindValue(':id', $id, PDO::PARAM_INT);
+	$statement->execute();
+	$user = $statement->fetch(PDO::FETCH_ASSOC);
+	return $user === false ? null : $user;
+    }
+
 }
