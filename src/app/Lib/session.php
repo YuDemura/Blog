@@ -121,9 +121,9 @@ final class Session
       *
       * @return string
       */
-	public function getMessage(): array
+	public function getMessage(): string
 	{
-		$message = $_SESSION[SessionKey::MESSAGE_KEY] ?? [];
+		$message = $_SESSION[SessionKey::MESSAGE_KEY] ?? "";
 		$messageKey = new SessionKey(SessionKey::MESSAGE_KEY);
 		$this->clear($messageKey);
 		return $message;
