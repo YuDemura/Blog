@@ -36,6 +36,20 @@ final class UserQueryService implements UserQueryServiceInterface
             );
     }
 
+    public function findUserById(UserId $id): ?User
+    {
+        $userMapper = $this->userDao->findUserById($id->value());
+
+        return $this->notExistsUser($userMapper)
+            ? null
+            : new User(
+                new UserId($userMapper['id']),
+                new UserName($userMapper['name']),
+                new Email($userMapper['email']),
+                new HashedPassword($userMapper['password'])
+            );
+    }
+
     private function notExistsUser(?array $user): bool
     {
         return is_null($user);
