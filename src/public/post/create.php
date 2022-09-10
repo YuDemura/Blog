@@ -2,7 +2,9 @@
 require_once __DIR__ . '/../../vendor/autoload.php';
 use App\Lib\Session;
 $session = Session::getInstance();
-$errors = $session->popAllErrors();
+$errors = $_SESSION['errors'] ?? [];
+unset($_SESSION['errors']);
+
 ?>
 
 <!DOCTYPE html>
