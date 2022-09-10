@@ -15,17 +15,20 @@ $user_id = $formInputs['user_id'];
 $blog_id = $_POST['id'];
 $commenter_name = filter_input(INPUT_POST, 'commenter_name');
 $comments = filter_input(INPUT_POST, 'comments');
-$UserId = new UserId($user_id->value());
-$BlogId = new BlogId($blog_id);
-$CommenterName = new CommenterName($commenter_name);
-$Comments = new Comments($comments);
-$useCaseInput = new CommentInput($UserId, $BlogId, $CommenterName, $Comments);
-$useCase = new CommentInteractor($useCaseInput);
-$useCaseOutput = $useCase->handler();
-if (!$useCaseOutput->isSuccess()) {
-    $session->appendError($useCaseOutput->message());
-} else {
-    $session->setMessage($useCaseOutput->message());
+
+try {
+    if (empty($commenter_name) || empty($comments)) {
+        throw new Exception('コメント名とコメント内容を入力して下さい');
+    }
+    $UserId = new UserId($user_id->value());
+    $BlogId = new BlogId($blog_id);
+    $CommenterName = new CommenterName($commenter_name);
+    $Comments = new Comments($comments);
+    $useCaseInput = new CommentInput($UserId, $BlogId, $CommenterName, $Comments);
+    $useCase = new CommentInteractor($useCaseInput);
+    $useCaseOutput = $useCase->handler();
+} catch (Exception $e) {
+    $_SESSION['errors'][] = $e->getMessage();
 }
 redirect("/detail.php?id=$blog_id");
 ?>
