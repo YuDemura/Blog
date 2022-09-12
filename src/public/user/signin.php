@@ -20,14 +20,13 @@ $email = $formInputs['email'] ?? '';
 </head>
 
 <body class="bg-gray-200 w-full h-screen flex justify-center items-center">
-    <?php foreach ($errors as $error): ?>
-        <p class="text-red-600"><?php echo $error; ?></p>
-      <?php endforeach; ?>
     <div class="w-96  bg-white pt-10 pb-10 rounded-xl">
         <div class="w-60 m-auto text-center">
             <h2 class="text-2xl mb-5">ログイン</h2>
             <h3 class="mb-5 text-xl"><?php echo $successRegistedMessage; ?></h3>
-            <p class="text-red-600"><?php echo $errors; ?></p>
+            <?php foreach ($errors as $error): ?>
+            <p class="text-red-600"><?php echo $error; ?></p>
+            <?php endforeach; ?>
             <form class="px-4" action="./signin_complete.php" method="POST">
                 <p><input class="border-2 border-gray-300 mb-5 w-full" type=“text” name="email" type="mail" required placeholder="Email" value="<?php $email ?>"></p>
                 <p><input class="border-2 border-gray-300 mb-5 w-full" type="password" placeholder="Password" name="password" required></p>

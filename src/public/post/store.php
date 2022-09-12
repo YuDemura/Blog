@@ -22,19 +22,20 @@ if ($_POST) {
     $user_id = $formInputs['user_id'];
     $title = filter_input(INPUT_POST, 'title');
     $contents = filter_input(INPUT_POST, 'contents');
-    $userId = new UserId($user_id->value());
-    $Title = new Title($title);
-    $Contents = new Contents($contents);
-    $useCaseInput = new CreateBlogInput($userId, $Title, $Contents);
-    $useCase = new CreateBlogInteractor($useCaseInput);
-    $useCaseOutput = $useCase->handler();
-    if ($useCaseOutput->isSuccess()) {
-        $session->setMessage($useCaseOutput->message());
+    try {
+        if (empty($title) || empty($contents)) {
+            throw new Exception('タイトルとブログ内容を入力して下さい');
+        }
+        $userId = new UserId($user_id->value());
+        $Title = new Title($title);
+        $Contents = new Contents($contents);
+        $useCaseInput = new CreateBlogInput($userId, $Title, $Contents);
+        $useCase = new CreateBlogInteractor($useCaseInput);
+        $useCaseOutput = $useCase->handler();
         redirect('/../../mypage.php');
-    } else {
-        $session->appendError($useCaseOutput->message());
+    } catch (Exception $e) {
+        $_SESSION['errors'][] = $e->getMessage();
         redirect('./create.php');
     }
 }
-
 ?>

@@ -4,12 +4,12 @@ namespace App\Usecase\UseCaseOutput;
 final class CreateBlogOutput
 {
     private $isSuccess;
-    private $message;
+    // private $message;
 
-    public function __construct(bool $isSuccess, array $message)
+    public function __construct(bool $isSuccess)
     {
         $this->isSuccess = $isSuccess;
-        $this->message = $message;
+        // $this->message = $message;
     }
 
     public function isSuccess(): bool
@@ -17,8 +17,8 @@ final class CreateBlogOutput
         return $this->isSuccess;
     }
 
-    public function message(): array
-    {
-        return $this->message;
-    }
+    // public function message(): string
+    // {
+    //     return $this->message;
+    // }
 }

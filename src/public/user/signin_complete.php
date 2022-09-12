@@ -32,6 +32,7 @@ try {
     if (!$useCaseOutput->isSuccess()) {
         throw new Exception($useCaseOutput->message());
     }
+    $_SESSION['errors'][] = $useCaseOutput->message();
     redirect('../index.php');
 } catch (Exception $e) {
     $_SESSION['errors'][] = $e->getMessage();
