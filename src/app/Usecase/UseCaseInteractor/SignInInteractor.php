@@ -7,7 +7,7 @@ use App\Domain\Entity\User;
 use App\Domain\ValueObject\HashedPassword;
 use App\Usecase\UseCaseInput\SignInInput;
 use App\Usecase\UseCaseOutput\SignInOutput;
-use App\Adapter\QueryService\UserQueryService;
+use App\Domain\InterfaceMapper\UserQueryServiceInterface;
 
 final class SignInInteractor
 {
@@ -15,9 +15,9 @@ final class SignInInteractor
     const SUCCESS_MESSAGE = 'ログインしました';
 
     /**
-     * @var UserQueryServise
+     * @var UserQueryServiseInterface
      */
-    private $userQueryService;
+    private $userQueryServiceInterface;
 
     /**
      * @var SignInInput
@@ -29,9 +29,9 @@ final class SignInInteractor
      *
      * @param SignInInput $input
      */
-    public function __construct(SignInInput $input)
+    public function __construct(SignInInput $input, UserQueryServiceInterface $userQueryServiceInterface)
     {
-        $this->userQueryService = new UserQueryService();
+        $this->userQueryServiceInterface = $userQueryServiceInterface;
         $this->input = $input;
     }
 
@@ -53,7 +53,7 @@ final class SignInInteractor
 
     private function findUser(): ?User
     {
-        return $this->userQueryService->findUserByMail($this->input->email());
+        return $this->userQueryServiceInterface->findUserByMail($this->input->email());
     }
 
     private function notExistsUser(?User $user): bool
