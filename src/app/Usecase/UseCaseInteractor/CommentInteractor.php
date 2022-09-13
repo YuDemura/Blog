@@ -51,7 +51,7 @@ final class CommentInteractor
      */
     private function findBlog(): ?Blog
     {
-        return $this->blogQueryService->findBlogByBlogId($this->input->blog_id());
+        return $this->blogQueryService->findById($this->input->blog_id());
     }
 
     /**

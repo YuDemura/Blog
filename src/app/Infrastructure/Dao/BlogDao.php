@@ -88,7 +88,7 @@ final class BlogDao extends Dao
      * @param string $contents
      * @param string $direction
      */
-    public function showBlogList(string $user_id, string $title, string $contents, string $direction): ?array
+    public function showList(string $user_id, string $title, string $contents, string $direction): ?array
     {
 	$sql = <<<EOF
 		SELECT
@@ -211,49 +211,23 @@ final class BlogDao extends Dao
 			, contents=:contents
 		WHERE
 			id = :id
-			and
-			user_id=:user_id
 		;
 	EOF;
 	$statement = $this->pdo->prepare($sql);
 	$statement->bindValue(':title', $blog->title()->value(), PDO::PARAM_STR);
 	$statement->bindValue(':contents', $blog->contents()->value(), PDO::PARAM_STR);
 	$statement->bindParam(':id', $blog->blog_id()->value(), PDO::PARAM_INT);
-	$statement->bindValue(':user_id', $blog->user_id()->value(), PDO::PARAM_INT);
 	$statement->execute();
     }
 
 	 /**
      * ブログを検索する
+	 * ブログID=XXの記事をDBから取得し、その記事を書いた人のユーザIDを取得
+
      * @param  string $blog_id
      */
-    public function findBlogByBlogId(string $blog_id)
+    public function findById(string $blog_id)
     {
-	$sql = <<<EOF
-		SELECT
-			id
-			, user_id
-			, title
-			, contents
-		FROM
-			blogs
-		WHERE
-			id = :id
-		;
-	EOF;
-	$statement = $this->pdo->prepare($sql);
-	$statement->bindValue(':id', $blog_id, PDO::PARAM_STR);
-	$statement->execute();
-	$blog = $statement->fetch(PDO::FETCH_ASSOC);
-	return $blog;
-    }
-
-	/**
-	 * ブログID=XXの記事をDBから取得し、その記事を書いた人のユーザIDを取得
-	 * @param string $blog_id
-	 */
-	public function getUserByBlog(string $blog_id)
-	{
 	$sql = <<<EOF
 		SELECT
 			id
@@ -269,7 +243,7 @@ final class BlogDao extends Dao
 	$statement = $this->pdo->prepare($sql);
 	$statement->bindValue(':id', $blog_id, PDO::PARAM_INT);
 	$statement->execute();
-	$user = $statement->fetch(PDO::FETCH_ASSOC);
-	return $user;
-	}
+	$blog = $statement->fetch(PDO::FETCH_ASSOC);
+	return $blog;
+    }
 }
