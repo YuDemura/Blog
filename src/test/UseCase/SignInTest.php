@@ -73,6 +73,9 @@ final class SignInTest extends TestCase
         );
 
         $userQueryServiceInterface = new class implements UserQueryServiceInterface {
+            /**
+            * @runInSeparateProcess
+            */
             public function findUserByMail(Email $email): ?User
             {
                 return new User(
