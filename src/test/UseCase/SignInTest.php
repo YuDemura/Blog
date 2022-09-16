@@ -64,6 +64,7 @@ final class SignInTest extends TestCase
 
     /**
      * @test
+     * @runInSeparateProcess
      */
     public function DBに同じメールのユーザー情報が存在するかつパスワードがハッシュ値と一致する場合_trueが返って来ること()
     {
@@ -73,9 +74,6 @@ final class SignInTest extends TestCase
         );
 
         $userQueryServiceInterface = new class implements UserQueryServiceInterface {
-            /**
-            * @runInSeparateProcess
-            */
             public function findUserByMail(Email $email): ?User
             {
                 return new User(
