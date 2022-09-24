@@ -8,6 +8,8 @@ use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\InputPassword;
 use App\Usecase\UseCaseInput\SignInInput;
 use App\Usecase\UseCaseInteractor\SignInInteractor;
+use App\Infrastructure\Dao\UserDao;
+use App\Adapter\QueryService\UserQueryService;
 
 $email = filter_input(INPUT_POST, 'email');
 $password = filter_input(INPUT_POST, 'password');
@@ -26,7 +28,9 @@ try {
     $userEmail = new Email($email);
     $inputPassword = new InputPassword($password);
     $useCaseInput = new SignInInput($userEmail, $inputPassword);
-    $useCase = new SignInInteractor($useCaseInput);
+    $userDao = new UserDao();
+    $userQueryService = new UserQueryService($userDao);
+    $useCase = new SignInInteractor($useCaseInput, $userQueryService);
     $useCaseOutput = $useCase->handler();
 
     if (!$useCaseOutput->isSuccess()) {
