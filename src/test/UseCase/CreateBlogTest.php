@@ -73,8 +73,6 @@ final class CreateBlogTest extends TestCase
             {
 
             }
-
-
         };
 
         $blogRepositoryInterface = new class implements BlogRepositoryInterface {
