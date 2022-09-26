@@ -40,7 +40,6 @@ final class CreateBlogTest extends TestCase
             }
             public function findUserByMail(Email $email): ?User
             {
-
             }
         };
 
@@ -71,7 +70,6 @@ final class CreateBlogTest extends TestCase
             }
             public function findUserByMail(Email $email): ?User
             {
-
             }
         };
 
