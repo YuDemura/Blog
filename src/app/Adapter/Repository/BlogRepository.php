@@ -6,8 +6,10 @@ use App\Infrastructure\Dao\BlogDao;
 use App\Domain\ValueObject\NewBlog;
 use App\Domain\ValueObject\UpdateBlog;
 use App\Domain\ValueObject\Delete;
+use App\Domain\InterfaceMapper\BlogRepositoryInterface;
 
-final class BlogRepository
+
+final class BlogRepository implements BlogRepositoryInterface
 {
     /**
      * @var BlogDao
