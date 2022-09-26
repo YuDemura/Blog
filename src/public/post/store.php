@@ -7,6 +7,10 @@ use App\Usecase\UseCaseInteractor\CreateBlogInteractor;
 use App\Domain\ValueObject\UserId;
 use App\Domain\ValueObject\Title;
 use App\Domain\ValueObject\Contents;
+use App\Adapter\QueryService\UserQueryService;
+use App\Infrastructure\Dao\UserDao;
+use App\Infrastructure\Dao\BlogDao;
+use App\Adapter\Repository\BlogRepository;
 
 $session = Session::getInstance();
 if (!$session){
@@ -30,7 +34,11 @@ if ($_POST) {
         $Title = new Title($title);
         $Contents = new Contents($contents);
         $useCaseInput = new CreateBlogInput($userId, $Title, $Contents);
-        $useCase = new CreateBlogInteractor($useCaseInput);
+        $userDao = new UserDao();
+        $blogDao = new BlogDao();
+        $userQueryService = new UserQueryService($userDao);
+        $blogRepository = new BlogRepository($blogDao);
+        $useCase = new CreateBlogInteractor($useCaseInput, $userQueryService, $blogRepository);
         $useCaseOutput = $useCase->handler();
         redirect('/../../mypage.php');
     } catch (Exception $e) {
