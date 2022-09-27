@@ -8,6 +8,10 @@ use App\Domain\ValueObject\UserId;
 use App\Domain\ValueObject\BlogId;
 use App\Domain\ValueObject\CommenterName;
 use App\Domain\ValueObject\Comments;
+use App\Infrastructure\Dao\CommentDao;
+use App\Infrastructure\Dao\BlogDao;
+use App\Adapter\QueryService\BlogQueryService;
+use App\Adapter\Repository\CommentRepository;
 
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();
@@ -25,7 +29,11 @@ try {
     $CommenterName = new CommenterName($commenter_name);
     $Comments = new Comments($comments);
     $useCaseInput = new CommentInput($UserId, $BlogId, $CommenterName, $Comments);
-    $useCase = new CommentInteractor($useCaseInput);
+    $commentDao = new CommentDao();
+    $blogDao = new BlogDao();
+    $blogQueryService = new BlogQueryService($blogDao);
+    $commentRepository = new CommentRepository($commentDao);
+    $useCase = new CommentInteractor($useCaseInput, $blogQueryService, $commentRepository);
     $useCaseOutput = $useCase->handler();
 } catch (Exception $e) {
     $_SESSION['errors'][] = $e->getMessage();
