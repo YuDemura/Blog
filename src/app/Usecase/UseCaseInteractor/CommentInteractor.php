@@ -8,28 +8,36 @@ use App\Domain\ValueObject\NewComment;
 use App\Usecase\UseCaseInput\CommentInput;
 use App\Usecase\UseCaseOutput\CommentOutput;
 use App\Domain\Entity\Blog;
+use App\Domain\InterfaceMapper\BlogQueryServiceInterface;
+use App\Domain\InterfaceMapper\CommentRepositoryInterface;
+
+
 
 final class CommentInteractor
 {
     /**
-     * @var CommentRepository
+     * @var CommentRepositoryInterface
      */
-    private $commentRepository;
+    private $commentRepositoryInterface;
 
     /**
-     * @var BlogQueryService
+     * @var BlogQueryServiceInterface
      */
-    private $blogQueryService;
+    private $blogQueryServiceInterface;
 
     /**
      * @var CommentInput
      */
     private $input;
 
-    public function __construct(CommentInput $input)
+    public function __construct(
+        CommentInput $input,
+        BlogQueryServiceInterface $blogQueryServiceInterface,
+        CommentRepositoryInterface $commentRepositoryInterface
+        )
     {
-        $this->commentRepository = new CommentRepository();
-        $this->blogQueryService = new BlogQueryService();
+        $this->commentRepositoryInterface = $commentRepositoryInterface;
+        $this->blogQueryServiceInterface = $blogQueryServiceInterface;
         $this->input = $input;
     }
 
@@ -51,7 +59,7 @@ final class CommentInteractor
      */
     private function findBlog(): ?Blog
     {
-        return $this->blogQueryService->findById($this->input->blog_id());
+        return $this->blogQueryServiceInterface->findById($this->input->blog_id());
     }
 
     /**
@@ -61,7 +69,7 @@ final class CommentInteractor
      */
     private function commentup(): void
     {
-        $this->commentRepository->insert(
+        $this->commentRepositoryInterface->insert(
             new NewComment(
                 $this->input->user_id(),
                 $this->input->blog_id(),
