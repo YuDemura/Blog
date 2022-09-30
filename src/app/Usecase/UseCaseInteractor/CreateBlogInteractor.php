@@ -4,34 +4,37 @@ namespace App\Usecase\UseCaseInteractor;
 require_once __DIR__ . '/../../../vendor/autoload.php';
 use App\Usecase\UseCaseInput\CreateBlogInput;
 use App\Usecase\UseCaseOutput\CreateBlogOutput;
-use App\Adapter\Repository\BlogRepository;
-use App\Adapter\QueryService\UserQueryService;
 use App\Domain\ValueObject\NewBlog;
 use App\Domain\Entity\User;
+use App\Domain\InterfaceMapper\UserQueryServiceInterface;
+use App\Domain\InterfaceMapper\BlogRepositoryInterface;
 
 final class CreateBlogInteractor
 {
     /**
-     * @var BlogRepository
+     * @var BlogRepositoryInterface
      */
-    private $blogRepository;
+    private $blogRepositoryInterface;
 
     /**
-     * @var UserQueryService
+     * @var UserQueryServiceInterface
      */
-    private $userQueryService;
+    private $userQueryServiceInterface;
 
     /**
      * @var CreateBlogInput
      */
     private $input;
 
-    public function __construct(CreateBlogInput $input)
-    {
-        $this->blogRepository = new BlogRepository();
-        $this->userQueryService = new UserQueryService();
-        $this->input = $input;
-    }
+    public function __construct(
+        CreateBlogInput $input,
+        UserQueryServiceInterface $userQueryServiceInterface,
+        BlogRepositoryInterface $blogRepositoryInterface
+        ) {
+            $this->blogRepositoryInterface = $blogRepositoryInterface;
+            $this->userQueryServiceInterface = $userQueryServiceInterface;
+            $this->input = $input;
+        }
 
     public function handler(): CreateBlogOutput
     {
@@ -46,7 +49,7 @@ final class CreateBlogInteractor
 
     private function blogup(): void
     {
-        $this->blogRepository->insert(
+        $this->blogRepositoryInterface->insert(
             new NewBlog(
                 $this->input->user_id(),
                 $this->input->title(),
@@ -61,6 +64,6 @@ final class CreateBlogInteractor
      */
     private function findUser(): ?User
     {
-        return $this->userQueryService->findUserById($this->input->user_id());
+        return $this->userQueryServiceInterface->findUserById($this->input->user_id());
     }
 }

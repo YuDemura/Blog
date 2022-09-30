@@ -8,8 +8,10 @@ use App\Domain\ValueObject\BlogId;
 use App\Domain\ValueObject\UserId;
 use App\Domain\ValueObject\Title;
 use App\Domain\ValueObject\Contents;
+use App\Domain\InterfaceMapper\BlogQueryServiceInterface;
 
-final class BlogQueryService
+
+final class BlogQueryService implements BlogQueryServiceInterface
 {
     /**
      * @var BlogDao
