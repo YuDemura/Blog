@@ -19,7 +19,7 @@ final class EditInteractor
     /**
      * @var BlogRepositoryInterface
      */
-    private $BlogRepositoryInterface;
+    private $blogRepositoryInterface;
 
     /**
      * @var EditInput
@@ -75,7 +75,7 @@ final class EditInteractor
      */
     private function update(): void
     {
-        $this->BlogRepositoryInterface->updateBlog(
+        $this->blogRepositoryInterface->updateBlog(
             new UpdateBlog(
                 $this->input->blog_id(),
                 $this->input->user_id(),
