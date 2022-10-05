@@ -7,7 +7,7 @@ use App\Usecase\UseCaseInteractor\EditInteractor;
 use App\Domain\ValueObject\UserId;
 use App\Domain\ValueObject\Title;
 use App\Domain\ValueObject\Contents;
-use App\Domain\ValueObject\updateBlog;
+use App\Domain\ValueObject\UpdateBlog;
 use App\Domain\ValueObject\NewBlog;
 use App\Domain\Entity\Blog;
 use App\Domain\InterfaceMapper\BlogQueryServiceInterface;
