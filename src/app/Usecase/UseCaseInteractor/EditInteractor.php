@@ -6,32 +6,35 @@ use App\Usecase\UseCaseInput\EditInput;
 use App\Usecase\UseCaseOutput\EditOutput;
 use App\Domain\Entity\Blog;
 use App\Domain\ValueObject\UpdateBlog;
-use App\Adapter\QueryService\BlogQueryService;
-use App\Adapter\Repository\BlogRepository;
+use App\Domain\InterfaceMapper\BlogQueryServiceInterface;
+use App\Domain\InterfaceMapper\BlogRepositoryInterface;
 
 final class EditInteractor
 {
     /**
-     * @var BlogQueryService
+     * @var BlogQueryServiceInterface
      */
-    private $blogQueryService;
+    private $blogQueryServiceInterface;
 
     /**
-     * @var BlogRepository
+     * @var BlogRepositoryInterface
      */
-    private $BlogRepository;
+    private $blogRepositoryInterface;
 
     /**
      * @var EditInput
      */
     private $input;
 
-    public function __construct(EditInput $input)
-    {
-      $this->blogQueryService = new BlogQueryService();
-      $this->input = $input;
-      $this->BlogRepository = new BlogRepository();
-    }
+    public function __construct(
+        EditInput $input,
+        BlogQueryServiceInterface $blogQueryServiceInterface,
+        BlogRepositoryInterface $blogRepositoryInterface
+        ) {
+            $this->blogQueryServiceInterface = $blogQueryServiceInterface;
+            $this->input = $input;
+            $this->blogRepositoryInterface = $blogRepositoryInterface;
+        }
 
     public function handler(): EditOutput
     {
@@ -53,7 +56,7 @@ final class EditInteractor
      */
     private function getUser(): ?Blog
     {
-        return $this->blogQueryService->findById($this->input->blog_id());
+        return $this->blogQueryServiceInterface->findById($this->input->blog_id());
     }
 
     /**
@@ -62,7 +65,7 @@ final class EditInteractor
      */
     private function showBlog(): ?Blog
     {
-        return $this->blogQueryService->showDetail($this->input->user_id(), $this->input->blog_id());
+        return $this->blogQueryServiceInterface->showDetail($this->input->user_id(), $this->input->blog_id());
     }
 
     /**
@@ -72,7 +75,7 @@ final class EditInteractor
      */
     private function update(): void
     {
-        $this->BlogRepository->updateBlog(
+        $this->blogRepositoryInterface->updateBlog(
             new UpdateBlog(
                 $this->input->blog_id(),
                 $this->input->user_id(),

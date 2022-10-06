@@ -9,6 +9,9 @@ use App\Domain\ValueObject\UserId;
 use App\Domain\ValueObject\Title;
 use App\Domain\ValueObject\Contents;
 use App\Domain\ValueObject\BlogId;
+use App\Infrastructure\Dao\BlogDao;
+use App\Adapter\QueryService\BlogQueryService;
+use App\Adapter\Repository\BlogRepository;
 
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();
@@ -21,7 +24,10 @@ $UserId = new UserId($user_id->value());
 $Title = new Title($title);
 $Contents = new Contents($contents);
 $useCaseInput = new EditInput($BlogId, $UserId, $Title, $Contents);
-$useCase = new EditInteractor($useCaseInput);
+$blogDao = new BlogDao();
+$blogQueryService = new BlogQueryService($blogDao);
+$blogRepository = new BlogRepository($blogDao);
+$useCase = new EditInteractor($useCaseInput, $blogQueryService, $blogRepository);
 $useCaseOutput = $useCase->handler();
 if ($useCaseOutput->isSuccess()) {
     redirect("myarticledetail.php?id=$blog_id");
