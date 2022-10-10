@@ -5,37 +5,40 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use App\Usecase\UseCaseInput\DeleteInput;
 use App\Usecase\UseCaseOutput\DeleteOutput;
 use App\Domain\Entity\Blog;
-use App\Lib\Session;
-use App\Adapter\QueryService\BlogQueryService;
-use App\Adapter\Repository\BlogRepository;
+use App\Domain\InterfaceMapper\BlogQueryServiceInterface;
+use App\Domain\InterfaceMapper\BlogRepositoryInterface;
 use App\Domain\ValueObject\Delete;
 
 final class DeleteInteractor
 {
     /**
-     * @var BlogQueryService
+     * @var BlogQueryServiceInterface
      */
-    private $blogQueryService;
+    private $blogQueryServiceInterface;
 
     /**
-     * @var BlogRepository
+     * @var BlogRepositoryInterface
      */
-    private $BlogRepository;
+    private $blogRepositoryInterface;
 
     /**
      * @var DeleteInput
      */
     private $input;
 
-    public function __construct(DeleteInput $input)
+    public function __construct(
+      DeleteInput $input,
+      BlogQueryServiceInterface $blogQueryServiceInterface,
+      BlogRepositoryInterface $blogRepositoryInterface
+      )
     {
-        $this->blogQueryService = new BlogQueryService();
-        $this->BlogRepository = new BlogRepository();
+        $this->blogQueryServiceInterface = $blogQueryServiceInterface;
+        $this->blogRepositoryInterface = $blogRepositoryInterface;
         $this->input = $input;
     }
 
     public function handler(): DeleteOutput
-    {      
+    {
       $blog = $this->findBlog();
 
       if (!$blog) {
@@ -52,7 +55,7 @@ final class DeleteInteractor
      */
     private function findBlog(): ?Blog
     {
-        return $this->blogQueryService->findBlogByBlogId($this->input->blog_id());
+        return $this->blogQueryServiceInterface->findById($this->input->blog_id());
     }
 
     /**
@@ -61,7 +64,7 @@ final class DeleteInteractor
      */
     private function deleteBlog(): void
     {
-        $this->BlogRepository->delete(new Delete($this->input->blog_id())
+        $this->blogRepositoryInterface->delete(new Delete($this->input->blog_id())
         );
     }
 }

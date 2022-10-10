@@ -7,6 +7,8 @@ use App\Infrastructure\Dao\BlogDao;
 use App\Usecase\UseCaseInput\DeleteInput;
 use App\Usecase\UseCaseInteractor\DeleteInteractor;
 use App\Domain\ValueObject\BlogId;
+use App\Adapter\QueryService\BlogQueryService;
+use App\Adapter\Repository\BlogRepository;
 
 $session = Session::getInstance();
 $formInputs = $session->getFormInputs();
@@ -18,7 +20,9 @@ $blog = $blogDao->edit($blog_id, $user_id->value());
 if (isset($_POST['delete'])) {
     $BlogId = new BlogId($blog_id);
     $useCaseInput = new DeleteInput($BlogId);
-    $useCase = new DeleteInteractor($useCaseInput);
+    $blogQueryService = new BlogQueryService($blogDao);
+    $blogRepository = new BlogRepository($blogDao);
+    $useCase = new DeleteInteractor($useCaseInput, $blogQueryService, $blogRepository);
     $useCaseOutput = $useCase->handler();
     if ($useCaseOutput->isSuccess()) {
         redirect('/mypage.php');
